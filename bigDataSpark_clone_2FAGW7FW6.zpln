@@ -1,0 +1,3742 @@
+{
+  "paragraphs": [
+    {
+      "title": "KA3 (SQL QUERIES)",
+      "text": "%md",
+      "user": "anonymous",
+      "dateUpdated": "2021-07-01 17:44:12.000",
+      "config": {
+        "tableHide": true,
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/scala",
+        "fontSize": 9.0,
+        "editorHide": false,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "jobName": "paragraph_1591481313143_103826624",
+      "id": "20210701-174412_1952096840",
+      "dateCreated": "2021-07-01 17:44:12.000",
+      "dateStarted": "2021-03-08 14:02:49.000",
+      "dateFinished": "2021-03-08 14:02:49.000",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Load athletes dataset",
+      "text": "val athleteText \u003d sc.textFile(\"C:/Users/Administrator/Downloads/athletes.csv\")\n\ncase class Athlete(ID : String, Name : String, Sex : String, Age : String, Height : String, Weight : String, Team : String, NOC : String, Games: String, Year : String, Season : String, City : String, Sport : String, Event: String, Medal : String)\n\n\n// split each line, filter out header (starts with \"ID\"), and map it into Athlete case class  \nval athlete \u003d athleteText.map(s\u003d\u003es.split(\";\")).filter(s\u003d\u003es(0)!\u003d\"ID\").map(\n    s\u003d\u003eAthlete(s(0).replaceAll(\"\\\"\", \"\"), \n    s(1).replaceAll(\"\\\"\", \"\"),\n    s(2).replaceAll(\"\\\"\", \"\"),\n    s(3).replaceAll(\"\\\"\", \"\"),\n    s(4).replaceAll(\"\\\"\", \"\"),\n    s(5).replaceAll(\"\\\"\", \"\"),\n    s(6).replaceAll(\"\\\"\", \"\"),\n    s(7).replaceAll(\"\\\"\", \"\"),\n    s(8).replaceAll(\"\\\"\", \"\"),\n    s(9).replaceAll(\"\\\"\", \"\"),\n    s(10).replaceAll(\"\\\"\", \"\"),\n    s(11).replaceAll(\"\\\"\", \"\"),\n    s(12).replaceAll(\"\\\"\", \"\"),\n    s(13).replaceAll(\"\\\"\", \"\"),\n    s(14).replaceAll(\"\\\"\", \"\")\n        )\n)\n\n// convert to DataFrame and create temporal table\nathlete.toDF().registerTempTable(\"athletes\")",
+      "user": "anonymous",
+      "dateUpdated": "2021-07-01 17:44:12.000",
+      "config": {
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "selectedInterpreter": {
+          "name": "md",
+          "profile": "md",
+          "isCustom": false,
+          "editorLanguage": "markdown",
+          "className": "org.apache.zeppelin.markdown.Markdown",
+          "isDefault": true
+        },
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/scala",
+        "editorHide": false,
+        "title": true,
+        "results": [
+          {}
+        ],
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "warning: there was one deprecation warning; re-run with -deprecation for details\nimport sqlContext.implicits._\r\nathleteText: org.apache.spark.rdd.RDD[String] \u003d C:/Users/Administrator/Downloads/athletes.csv MapPartitionsRDD[726] at textFile at \u003cconsole\u003e:16\r\ndefined class Athlete\r\nathlete: org.apache.spark.rdd.RDD[Athlete] \u003d MapPartitionsRDD[729] at map at \u003cconsole\u003e:22\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1591481251030_1954960885",
+      "id": "20210701-174412_1740706670",
+      "dateCreated": "2021-07-01 17:44:12.000",
+      "dateStarted": "2020-06-12 01:53:29.000",
+      "dateFinished": "2020-06-12 01:53:30.000",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Load regions dataset",
+      "text": "val regionText \u003d sc.textFile(\"C:/Users/Administrator/Downloads/regions.csv\")\r\n\r\ncase class Region(NOC : String, region : String, notes : String)\r\n\r\n\r\n// split each line, filter out header (starts with \"ID\"), and map it into Athlete case class  \r\nval region \u003d regionText.map(s\u003d\u003es.split(\";\")).filter(s\u003d\u003es(0)!\u003d\"ID\").map(\r\n    s\u003d\u003eRegion(s(0).replaceAll(\"\\\"\", \"\"), \r\n    s(1).replaceAll(\"\\\"\", \"\"),\r\n    s(2).replaceAll(\"\\\"\", \"\")\r\n        )\r\n)\r\n// convert to DataFrame and create temporal table\r\nregion.toDF().registerTempTable(\"regions\")",
+      "user": "anonymous",
+      "dateUpdated": "2021-07-01 17:44:12.000",
+      "config": {
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/scala",
+        "fontSize": 9.0,
+        "editorHide": false,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "warning: there was one deprecation warning; re-run with -deprecation for details\nimport sqlContext.implicits._\r\nregionText: org.apache.spark.rdd.RDD[String] \u003d C:/Users/Administrator/Downloads/regions.csv MapPartitionsRDD[731] at textFile at \u003cconsole\u003e:16\r\ndefined class Region\r\nregion: org.apache.spark.rdd.RDD[Region] \u003d MapPartitionsRDD[734] at map at \u003cconsole\u003e:22\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1591481251030_960575329",
+      "id": "20210701-174412_1916360303",
+      "dateCreated": "2021-07-01 17:44:12.000",
+      "dateStarted": "2020-06-12 01:53:31.000",
+      "dateFinished": "2020-06-12 01:53:32.000",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Problem 1: Number of Medals 1896-2016",
+      "text": "%sql\r\n--Problem 1: Number of Medals 1896-2016\r\nselect Medal, count(Medal) as `Number of Medals`\r\nfrom athletes\r\nwhere  Medal \u003c\u003e \u0027NA\u0027\r\ngroup by Medal",
+      "user": "anonymous",
+      "dateUpdated": "2021-07-01 17:44:12.000",
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "sql",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 6.0,
+        "editorMode": "ace/mode/sql",
+        "fontSize": 9.0,
+        "editorHide": false,
+        "title": true,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "stackedAreaChart",
+              "height": 300.0,
+              "optionOpen": false,
+              "setting": {
+                "table": {
+                  "tableGridState": {
+                    "columns": [
+                      {
+                        "name": "Medal",
+                        "visible": true,
+                        "width": "*",
+                        "sort": {},
+                        "filters": [
+                          {}
+                        ],
+                        "pinned": ""
+                      },
+                      {
+                        "name": "Medals",
+                        "visible": true,
+                        "width": "*",
+                        "sort": {},
+                        "filters": [
+                          {}
+                        ],
+                        "pinned": ""
+                      }
+                    ],
+                    "scrollFocus": {},
+                    "selection": [],
+                    "grouping": {
+                      "grouping": [],
+                      "aggregations": [],
+                      "rowExpandedStates": {}
+                    },
+                    "treeView": {},
+                    "pagination": {
+                      "paginationCurrentPage": 1.0,
+                      "paginationPageSize": 250.0
+                    }
+                  },
+                  "tableColumnTypeState": {
+                    "updated": false,
+                    "names": {
+                      "Medal": "string",
+                      "Number of Medals": "string"
+                    }
+                  },
+                  "updated": false,
+                  "initialized": false,
+                  "tableOptionSpecHash": "[{\"name\":\"useFilter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable filter for columns\"},{\"name\":\"showPagination\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable pagination for better navigation\"},{\"name\":\"showAggregationFooter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable a footer for displaying aggregated values\"}]",
+                  "tableOptionValue": {
+                    "useFilter": false,
+                    "showPagination": false,
+                    "showAggregationFooter": false
+                  }
+                },
+                "multiBarChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "rotate",
+                  "stacked": false
+                },
+                "stackedAreaChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "default"
+                },
+                "lineChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "default"
+                },
+                "pieChart": {}
+              },
+              "commonSetting": {},
+              "keys": [
+                {
+                  "name": "Medal",
+                  "index": 0.0,
+                  "aggr": "sum"
+                }
+              ],
+              "groups": [
+                {
+                  "name": "Medal",
+                  "index": 0.0,
+                  "aggr": "sum"
+                }
+              ],
+              "values": [
+                {
+                  "name": "Number of Medals",
+                  "index": 1.0,
+                  "aggr": "sum"
+                }
+              ]
+            },
+            "helium": {}
+          },
+          "1": {
+            "graph": {
+              "mode": "table",
+              "height": 86.0,
+              "optionOpen": false
+            }
+          }
+        },
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TABLE",
+            "data": "Medal\tNumber of Medals\nSilver\t13116\nGold\t13372\nBronze\t13295\n"
+          },
+          {
+            "type": "TEXT",
+            "data": ""
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1591481251030_292546971",
+      "id": "20210701-174412_184335744",
+      "dateCreated": "2021-07-01 17:44:12.000",
+      "dateStarted": "2020-06-12 01:53:32.000",
+      "dateFinished": "2020-06-12 01:53:36.000",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Problem 2: Number of sports in Olympics 1896-2016",
+      "text": "%sql\r\n--Problem 2: Number of sports in Olympics 1896-2016\r\nselect count(distinct Sport) as `Number of sports in Olympic history`\r\nfrom athletes",
+      "user": "anonymous",
+      "dateUpdated": "2021-07-01 17:44:12.000",
+      "config": {
+        "editorSetting": {
+          "language": "sql",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 6.0,
+        "editorMode": "ace/mode/sql",
+        "fontSize": 9.0,
+        "editorHide": false,
+        "title": true,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "table",
+              "height": 328.0,
+              "optionOpen": false,
+              "setting": {
+                "table": {
+                  "tableGridState": {},
+                  "tableColumnTypeState": {
+                    "names": {
+                      "Number of sports in Olympic history": "string"
+                    },
+                    "updated": false
+                  },
+                  "tableOptionSpecHash": "[{\"name\":\"useFilter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable filter for columns\"},{\"name\":\"showPagination\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable pagination for better navigation\"},{\"name\":\"showAggregationFooter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable a footer for displaying aggregated values\"}]",
+                  "tableOptionValue": {
+                    "useFilter": false,
+                    "showPagination": false,
+                    "showAggregationFooter": false
+                  },
+                  "updated": false,
+                  "initialized": false
+                },
+                "multiBarChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "default"
+                },
+                "lineChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "default"
+                },
+                "stackedAreaChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "default"
+                }
+              },
+              "commonSetting": {},
+              "keys": [
+                {
+                  "name": "Number of sports in Olympic history",
+                  "index": 0.0,
+                  "aggr": "sum"
+                }
+              ],
+              "groups": [],
+              "values": [
+                {
+                  "name": "Number of sports in Olympic history",
+                  "index": 0.0,
+                  "aggr": "sum"
+                }
+              ]
+            },
+            "helium": {}
+          },
+          "1": {
+            "graph": {
+              "mode": "table",
+              "height": 246.0,
+              "optionOpen": false
+            }
+          }
+        },
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TABLE",
+            "data": "Number of sports in Olympic history\n66\n"
+          },
+          {
+            "type": "TEXT",
+            "data": ""
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1591481251031_-227883675",
+      "id": "20210701-174412_1725906779",
+      "dateCreated": "2021-07-01 17:44:12.000",
+      "dateStarted": "2020-06-12 01:53:36.000",
+      "dateFinished": "2020-06-12 01:53:40.000",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Problem 3:Finding number of medal for a country",
+      "text": "%sql\n--Problem 3:Finding number of medal for a country\nselect NOC, count(Medal) as Medal\nfrom athletes\nwhere Medal \u003c\u003e \u0027NA\u0027 and Medal \u003d \u0027Gold\u0027\ngroup by NOC\norder by Medal desc\nlimit 10",
+      "user": "anonymous",
+      "dateUpdated": "2021-07-01 17:44:12.000",
+      "config": {
+        "editorSetting": {
+          "language": "sql",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 6.0,
+        "editorMode": "ace/mode/sql",
+        "fontSize": 9.0,
+        "editorHide": false,
+        "title": true,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "multiBarChart",
+              "height": 338.0,
+              "optionOpen": false,
+              "setting": {
+                "table": {
+                  "tableGridState": {},
+                  "tableColumnTypeState": {
+                    "names": {
+                      "NOC": "string",
+                      "Medal": "string"
+                    },
+                    "updated": false
+                  },
+                  "tableOptionSpecHash": "[{\"name\":\"useFilter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable filter for columns\"},{\"name\":\"showPagination\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable pagination for better navigation\"},{\"name\":\"showAggregationFooter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable a footer for displaying aggregated values\"}]",
+                  "tableOptionValue": {
+                    "useFilter": false,
+                    "showPagination": false,
+                    "showAggregationFooter": false
+                  },
+                  "updated": false,
+                  "initialized": false
+                },
+                "multiBarChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "default"
+                },
+                "stackedAreaChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "default"
+                },
+                "lineChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "default"
+                },
+                "pieChart": {}
+              },
+              "commonSetting": {},
+              "keys": [
+                {
+                  "name": "NOC",
+                  "index": 0.0,
+                  "aggr": "sum"
+                }
+              ],
+              "groups": [],
+              "values": [
+                {
+                  "name": "Medal",
+                  "index": 1.0,
+                  "aggr": "sum"
+                }
+              ]
+            },
+            "helium": {}
+          },
+          "1": {
+            "graph": {
+              "mode": "table",
+              "height": 86.0,
+              "optionOpen": false
+            }
+          }
+        },
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TABLE",
+            "data": "NOC\tMedal\nUSA\t2638\nURS\t1082\nGER\t745\nGBR\t678\nITA\t575\nFRA\t501\nSWE\t479\nCAN\t463\nHUN\t432\nGDR\t397\n"
+          },
+          {
+            "type": "TEXT",
+            "data": ""
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1591481251031_1443852800",
+      "id": "20210701-174412_2056572110",
+      "dateCreated": "2021-07-01 17:44:12.000",
+      "dateStarted": "2020-06-12 01:53:41.000",
+      "dateFinished": "2020-06-12 01:53:44.000",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "4.Female and Male players",
+      "text": "%sql\n--4.Female and Male players\nselect Sex, count(1) as `Players` from athletes where Sex \u003d \u0027F\u0027 group by Sex\nunion all\nselect Sex, count(1) as `Players` from athletes where Sex \u003d \u0027M\u0027 group by Sex\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-07-01 17:44:12.000",
+      "config": {
+        "editorSetting": {
+          "language": "sql",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 6.0,
+        "editorMode": "ace/mode/sql",
+        "fontSize": 9.0,
+        "editorHide": false,
+        "title": true,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "pieChart",
+              "height": 366.0,
+              "optionOpen": false,
+              "setting": {
+                "table": {
+                  "tableGridState": {},
+                  "tableColumnTypeState": {
+                    "names": {
+                      "Sex": "string",
+                      "Players": "string"
+                    },
+                    "updated": false
+                  },
+                  "tableOptionSpecHash": "[{\"name\":\"useFilter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable filter for columns\"},{\"name\":\"showPagination\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable pagination for better navigation\"},{\"name\":\"showAggregationFooter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable a footer for displaying aggregated values\"}]",
+                  "tableOptionValue": {
+                    "useFilter": false,
+                    "showPagination": false,
+                    "showAggregationFooter": false
+                  },
+                  "updated": false,
+                  "initialized": false
+                },
+                "multiBarChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "default"
+                },
+                "stackedAreaChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "default"
+                },
+                "lineChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "default"
+                },
+                "pieChart": {}
+              },
+              "commonSetting": {},
+              "keys": [
+                {
+                  "name": "Sex",
+                  "index": 0.0,
+                  "aggr": "sum"
+                }
+              ],
+              "groups": [],
+              "values": [
+                {
+                  "name": "Players",
+                  "index": 1.0,
+                  "aggr": "sum"
+                }
+              ]
+            },
+            "helium": {}
+          },
+          "1": {
+            "graph": {
+              "mode": "table",
+              "height": 86.0,
+              "optionOpen": false
+            }
+          }
+        },
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TABLE",
+            "data": "Sex\tPlayers\nF\t74522\nM\t196594\n"
+          },
+          {
+            "type": "TEXT",
+            "data": ""
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1591481251031_14250596",
+      "id": "20210701-174412_112558765",
+      "dateCreated": "2021-07-01 17:44:12.000",
+      "dateStarted": "2020-06-12 01:53:44.000",
+      "dateFinished": "2020-06-12 01:53:50.000",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Problem 5: Football gold medals",
+      "text": "%sql\r\n--Problem 5: Football gold medals\r\nselect NOC, count(Medal) as `Football Gold Medals `\r\nfrom athletes\r\nwhere Medal \u003c\u003e \u0027NA\u0027 and Sport \u003d \u0027Football\u0027 and Medal \u003d \u0027Gold\u0027\r\ngroup by NOC\r\norder by count(Medal) desc\r\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-07-01 17:44:12.000",
+      "config": {
+        "editorSetting": {
+          "language": "sql",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 6.0,
+        "editorMode": "ace/mode/sql",
+        "fontSize": 9.0,
+        "editorHide": false,
+        "title": true,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "table",
+              "height": 456.0,
+              "optionOpen": false,
+              "setting": {
+                "table": {
+                  "tableGridState": {},
+                  "tableColumnTypeState": {
+                    "names": {
+                      "NOC": "string",
+                      "Football Gold Medals": "string"
+                    },
+                    "updated": false
+                  },
+                  "tableOptionSpecHash": "[{\"name\":\"useFilter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable filter for columns\"},{\"name\":\"showPagination\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable pagination for better navigation\"},{\"name\":\"showAggregationFooter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable a footer for displaying aggregated values\"}]",
+                  "tableOptionValue": {
+                    "useFilter": false,
+                    "showPagination": false,
+                    "showAggregationFooter": false
+                  },
+                  "updated": false,
+                  "initialized": false
+                },
+                "multiBarChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "default"
+                },
+                "stackedAreaChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "default"
+                }
+              },
+              "commonSetting": {},
+              "keys": [
+                {
+                  "name": "NOC",
+                  "index": 0.0,
+                  "aggr": "sum"
+                }
+              ],
+              "groups": [],
+              "values": [
+                {
+                  "name": "Football Gold Medals",
+                  "index": 1.0,
+                  "aggr": "sum"
+                }
+              ]
+            },
+            "helium": {}
+          },
+          "1": {
+            "graph": {
+              "mode": "table",
+              "height": 86.0,
+              "optionOpen": false
+            }
+          }
+        },
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TABLE",
+            "data": "NOC\tFootball Gold Medals\nUSA\t66\nHUN\t46\nGBR\t36\nURS\t36\nARG\t34\nURU\t31\nGER\t18\nCMR\t18\nPOL\t17\nNOR\t17\nBRA\t17\nGDR\t17\nESP\t17\nFRA\t16\nTCH\t16\nMEX\t16\nNGR\t16\nYUG\t16\nITA\t14\nBEL\t14\nCAN\t13\nDEN\t12\nSWE\t12\n"
+          },
+          {
+            "type": "TEXT",
+            "data": ""
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1591481251031_1723882239",
+      "id": "20210701-174412_188029354",
+      "dateCreated": "2021-07-01 17:44:12.000",
+      "dateStarted": "2020-06-12 01:53:50.000",
+      "dateFinished": "2020-06-12 01:53:53.000",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Problem 6: Median height/weight of an Olympic medalist",
+      "text": "%sql\n--Problem 6: Median height/weight of an Olympic medalist\n--Average Height\nselect round(AVG(Height),2) as `Average Height`\nfrom athletes\nwhere Height\u003c\u003e \u0027NA\u0027 and Medal \u003c\u003e \u0027NA\u0027 or Medal \u003c\u003e null\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-07-01 17:44:12.000",
+      "config": {
+        "editorSetting": {
+          "language": "sql",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 6.0,
+        "editorMode": "ace/mode/sql",
+        "fontSize": 9.0,
+        "editorHide": false,
+        "title": true,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "table",
+              "height": 92.0,
+              "optionOpen": false,
+              "setting": {
+                "table": {
+                  "tableGridState": {},
+                  "tableColumnTypeState": {
+                    "names": {
+                      "Average Height": "string"
+                    },
+                    "updated": false
+                  },
+                  "tableOptionSpecHash": "[{\"name\":\"useFilter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable filter for columns\"},{\"name\":\"showPagination\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable pagination for better navigation\"},{\"name\":\"showAggregationFooter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable a footer for displaying aggregated values\"}]",
+                  "tableOptionValue": {
+                    "useFilter": false,
+                    "showPagination": false,
+                    "showAggregationFooter": false
+                  },
+                  "updated": false,
+                  "initialized": false
+                }
+              },
+              "commonSetting": {}
+            }
+          },
+          "1": {
+            "graph": {
+              "mode": "table",
+              "height": 86.0,
+              "optionOpen": false
+            }
+          }
+        },
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TABLE",
+            "data": "Average Height\n177.55\n"
+          },
+          {
+            "type": "TEXT",
+            "data": ""
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1591481251032_-1679890039",
+      "id": "20210701-174412_1740965904",
+      "dateCreated": "2021-07-01 17:44:12.000",
+      "dateStarted": "2020-06-12 01:53:53.000",
+      "dateFinished": "2020-06-12 01:53:55.000",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "",
+      "text": "%sql\n--Problem 6: Median height/weight of an Olympic medalist\n--Average Weight\nselect round(AVG(Weight),2) as `Average Weight`\nfrom athletes\nwhere Weight\u003c\u003e \u0027NA\u0027 and  Medal\u003c\u003e \u0027NA\u0027",
+      "user": "anonymous",
+      "dateUpdated": "2021-07-01 17:44:12.000",
+      "config": {
+        "editorSetting": {
+          "language": "sql",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 6.0,
+        "editorMode": "ace/mode/sql",
+        "fontSize": 9.0,
+        "editorHide": false,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "table",
+              "height": 160.0,
+              "optionOpen": false,
+              "setting": {
+                "table": {
+                  "tableGridState": {},
+                  "tableColumnTypeState": {
+                    "names": {
+                      "Average Weight": "string"
+                    },
+                    "updated": false
+                  },
+                  "tableOptionSpecHash": "[{\"name\":\"useFilter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable filter for columns\"},{\"name\":\"showPagination\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable pagination for better navigation\"},{\"name\":\"showAggregationFooter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable a footer for displaying aggregated values\"}]",
+                  "tableOptionValue": {
+                    "useFilter": false,
+                    "showPagination": false,
+                    "showAggregationFooter": false
+                  },
+                  "updated": false,
+                  "initialized": false
+                }
+              },
+              "commonSetting": {}
+            }
+          },
+          "1": {
+            "graph": {
+              "mode": "table",
+              "height": 86.0,
+              "optionOpen": false
+            }
+          }
+        },
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TABLE",
+            "data": "Average Weight\n73.77\n"
+          },
+          {
+            "type": "TEXT",
+            "data": ""
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1591481251032_1142170309",
+      "id": "20210701-174412_517499172",
+      "dateCreated": "2021-07-01 17:44:12.000",
+      "dateStarted": "2020-06-12 01:53:56.000",
+      "dateFinished": "2020-06-12 01:53:58.000",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Problem 7: Top countries with most medal won by female athletes",
+      "text": "%sql\n--Problem 7: Top countries with most medal won by female athletes\nselect NOC Country,count(Medal) as `Medal Won by Female Athletes`\nfrom athletes\nwhere Sex \u003d  \u0027F\u0027 and Medal \u003c\u003e \u0027NA\u0027\ngroup by Noc\norder by count(Medal) desc\nlimit 10",
+      "user": "anonymous",
+      "dateUpdated": "2021-07-01 17:44:12.000",
+      "config": {
+        "editorSetting": {
+          "language": "sql",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 6.0,
+        "editorMode": "ace/mode/sql",
+        "fontSize": 9.0,
+        "editorHide": false,
+        "title": true,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "stackedAreaChart",
+              "height": 536.0,
+              "optionOpen": false,
+              "setting": {
+                "table": {
+                  "tableGridState": {},
+                  "tableColumnTypeState": {
+                    "names": {
+                      "Country": "string",
+                      "Medal Won by Female Athletes": "string"
+                    },
+                    "updated": false
+                  },
+                  "tableOptionSpecHash": "[{\"name\":\"useFilter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable filter for columns\"},{\"name\":\"showPagination\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable pagination for better navigation\"},{\"name\":\"showAggregationFooter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable a footer for displaying aggregated values\"}]",
+                  "tableOptionValue": {
+                    "useFilter": false,
+                    "showPagination": false,
+                    "showAggregationFooter": false
+                  },
+                  "updated": false,
+                  "initialized": false
+                },
+                "multiBarChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "default"
+                },
+                "stackedAreaChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "default"
+                }
+              },
+              "commonSetting": {},
+              "keys": [
+                {
+                  "name": "Country",
+                  "index": 0.0,
+                  "aggr": "sum"
+                }
+              ],
+              "groups": [],
+              "values": [
+                {
+                  "name": "Medal Won by Female Athletes",
+                  "index": 1.0,
+                  "aggr": "sum"
+                }
+              ]
+            },
+            "helium": {}
+          }
+        },
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TABLE",
+            "data": "Country\tMedal Won by Female Athletes\nUSA\t1805\nURS\t687\nGER\t675\nCHN\t654\nRUS\t553\nAUS\t547\nCAN\t520\nGDR\t437\nNED\t432\nGBR\t395\n"
+          },
+          {
+            "type": "TEXT",
+            "data": ""
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1591481251033_2099491550",
+      "id": "20210701-174412_661485510",
+      "dateCreated": "2021-07-01 17:44:12.000",
+      "dateStarted": "2020-06-12 01:53:58.000",
+      "dateFinished": "2020-06-12 01:54:01.000",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Problem 8: 1896-2016 countries and medals in each olympics year",
+      "text": "%sql\n--Problem 8: 1896-2016 countries and medals in each olympics year\nselect y.Country, y.Year, y.Medals\nfrom\n(select Year as year, max(a.Medals) as mm\nfrom(\nselect  Noc Country,Year,count(Medal) as Medals\nfrom athletes\nwhere Medal \u003c\u003e \u0027NA\u0027 \ngroup by Noc,Year)\nas a\ngroup by year\n--order by year,mm desc\n) as x\ninner join (select  Noc Country,Year,count(Medal) as Medals\nfrom athletes\nwhere Medal \u003c\u003e \u0027NA\u0027\ngroup by Year,NOC) as y on y.Year \u003d x.year and y.Medals \u003d x.mm\norder by y.Year,y.Medals desc\n\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-07-01 17:44:12.000",
+      "config": {
+        "editorSetting": {
+          "language": "sql",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 6.0,
+        "editorMode": "ace/mode/sql",
+        "fontSize": 9.0,
+        "editorHide": false,
+        "title": true,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "lineChart",
+              "height": 358.0,
+              "optionOpen": false,
+              "setting": {
+                "table": {
+                  "tableGridState": {},
+                  "tableColumnTypeState": {
+                    "names": {
+                      "Country": "string",
+                      "Year": "string",
+                      "Medals": "string"
+                    },
+                    "updated": false
+                  },
+                  "tableOptionSpecHash": "[{\"name\":\"useFilter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable filter for columns\"},{\"name\":\"showPagination\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable pagination for better navigation\"},{\"name\":\"showAggregationFooter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable a footer for displaying aggregated values\"}]",
+                  "tableOptionValue": {
+                    "useFilter": false,
+                    "showPagination": false,
+                    "showAggregationFooter": false
+                  },
+                  "updated": false,
+                  "initialized": false
+                },
+                "multiBarChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "default"
+                },
+                "stackedAreaChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "default"
+                },
+                "lineChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "default"
+                }
+              },
+              "commonSetting": {},
+              "keys": [
+                {
+                  "name": "Country",
+                  "index": 0.0,
+                  "aggr": "sum"
+                }
+              ],
+              "groups": [],
+              "values": [
+                {
+                  "name": "Year",
+                  "index": 1.0,
+                  "aggr": "sum"
+                }
+              ]
+            },
+            "helium": {}
+          }
+        },
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TABLE",
+            "data": "Country\tYear\tMedals\nGRE\t1896\t48\nFRA\t1900\t235\nUSA\t1904\t394\nGRE\t1906\t102\nGBR\t1908\t368\nSWE\t1912\t190\nUSA\t1920\t194\nUSA\t1924\t194\nUSA\t1928\t102\nUSA\t1932\t223\nGER\t1936\t231\nUSA\t1948\t168\nUSA\t1952\t164\nURS\t1956\t206\nURS\t1960\t211\nURS\t1964\t221\nURS\t1968\t229\nURS\t1972\t259\nURS\t1976\t342\nURS\t1980\t496\nUSA\t1984\t361\nURS\t1988\t366\nEUN\t1992\t279\nGER\t1994\t40\nUSA\t1996\t259\nFIN\t1998\t58\nUSA\t2000\t242\nUSA\t2002\t84\nUSA\t2004\t263\nCAN\t2006\t69\nUSA\t2008\t317\nUSA\t2010\t97\nUSA\t2012\t248\nCAN\t2014\t86\nUSA\t2016\t264\n"
+          },
+          {
+            "type": "TEXT",
+            "data": ""
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1591481251033_-1962911629",
+      "id": "20210701-174412_1757959643",
+      "dateCreated": "2021-07-01 17:44:12.000",
+      "dateStarted": "2020-06-12 01:54:01.000",
+      "dateFinished": "2020-06-12 01:54:18.000",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Problem 9: (a) Gender Distribution for Summer Olympics",
+      "text": "%sql\n--Problem 9:(a) Gender Distribution for Summer Olympics\nselect \u0027Men\u0027 as gender,count(Sex) as `summer participants`, \n(round(((Count(Sex)* 100) / (Select count(Sex) From athletes where Season \u003d \u0027Summer\u0027)),2))  as percentage\nfrom athletes\nwhere Sex \u003d \u0027M\u0027 and Season \u003d \u0027Summer\u0027\n\nunion all\n\nselect \u0027Women\u0027 as gender, count(Sex) as `summer participants`, \n(round(((Count(Sex)* 100) / (Select count(Sex) From athletes where Season \u003d \u0027Summer\u0027)),2))  as percentage\nfrom athletes\nwhere Sex \u003d \u0027F\u0027 and Season \u003d \u0027Summer\u0027\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-07-01 17:44:12.000",
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "sql",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 6.0,
+        "editorMode": "ace/mode/sql",
+        "fontSize": 9.0,
+        "editorHide": false,
+        "title": true,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "multiBarChart",
+              "height": 242.0,
+              "optionOpen": false,
+              "setting": {
+                "table": {
+                  "tableGridState": {},
+                  "tableColumnTypeState": {
+                    "names": {
+                      "gender": "string",
+                      "summer participants": "string",
+                      "percentage": "string"
+                    },
+                    "updated": false
+                  },
+                  "tableOptionSpecHash": "[{\"name\":\"useFilter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable filter for columns\"},{\"name\":\"showPagination\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable pagination for better navigation\"},{\"name\":\"showAggregationFooter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable a footer for displaying aggregated values\"}]",
+                  "tableOptionValue": {
+                    "useFilter": false,
+                    "showPagination": false,
+                    "showAggregationFooter": false
+                  },
+                  "updated": false,
+                  "initialized": false
+                },
+                "multiBarChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "default"
+                },
+                "stackedAreaChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "default"
+                },
+                "lineChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "default"
+                },
+                "pieChart": {}
+              },
+              "commonSetting": {},
+              "keys": [
+                {
+                  "name": "gender",
+                  "index": 0.0,
+                  "aggr": "sum"
+                }
+              ],
+              "groups": [],
+              "values": [
+                {
+                  "name": "percentage",
+                  "index": 2.0,
+                  "aggr": "sum"
+                }
+              ]
+            },
+            "helium": {}
+          },
+          "1": {
+            "graph": {
+              "mode": "table",
+              "height": 86.0,
+              "optionOpen": false
+            }
+          }
+        },
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TABLE",
+            "data": "gender\tsummer participants\tpercentage\nMen\t163109\t73.29\nWomen\t59443\t26.71\n"
+          },
+          {
+            "type": "TEXT",
+            "data": ""
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1591481251033_2033602847",
+      "id": "20210701-174412_1997427058",
+      "dateCreated": "2021-07-01 17:44:12.000",
+      "dateStarted": "2020-06-12 01:54:18.000",
+      "dateFinished": "2020-06-12 01:54:27.000",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Problem 9: (b) Gender Distribution for Summer and Winter Olympic",
+      "text": "%sql\n--Problem 9:(b) Gender Distribution for Winter Olympics\nselect \u0027Men\u0027 as gender,count(Sex) as `winter participants`, \n(round(((Count(Sex)* 100) / (Select count(Sex) From athletes where Season \u003d \u0027Winter\u0027)),2))  as percentage\nfrom athletes\nwhere Sex \u003d \u0027M\u0027 and Season \u003d \u0027Winter\u0027\n\nunion all\n\nselect \u0027Women\u0027 as gender, count(Sex) as `winter participants`, \n(round(((Count(Sex)* 100) / (Select count(Sex) From athletes where Season \u003d \u0027Winter\u0027)),2))  as percentage\nfrom athletes\nwhere Sex \u003d \u0027F\u0027 and Season \u003d \u0027Winter\u0027",
+      "user": "anonymous",
+      "dateUpdated": "2021-07-01 17:44:12.000",
+      "config": {
+        "editorSetting": {
+          "language": "sql",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 6.0,
+        "editorMode": "ace/mode/sql",
+        "fontSize": 9.0,
+        "editorHide": false,
+        "title": true,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "multiBarChart",
+              "height": 260.0,
+              "optionOpen": false,
+              "setting": {
+                "table": {
+                  "tableGridState": {},
+                  "tableColumnTypeState": {
+                    "names": {
+                      "gender": "string",
+                      "winter participants": "string",
+                      "percentage": "string"
+                    },
+                    "updated": false
+                  },
+                  "tableOptionSpecHash": "[{\"name\":\"useFilter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable filter for columns\"},{\"name\":\"showPagination\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable pagination for better navigation\"},{\"name\":\"showAggregationFooter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable a footer for displaying aggregated values\"}]",
+                  "tableOptionValue": {
+                    "useFilter": false,
+                    "showPagination": false,
+                    "showAggregationFooter": false
+                  },
+                  "updated": false,
+                  "initialized": false
+                },
+                "multiBarChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "default"
+                },
+                "stackedAreaChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "default"
+                },
+                "lineChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "default"
+                }
+              },
+              "commonSetting": {},
+              "keys": [
+                {
+                  "name": "gender",
+                  "index": 0.0,
+                  "aggr": "sum"
+                }
+              ],
+              "groups": [],
+              "values": [
+                {
+                  "name": "winter participants",
+                  "index": 1.0,
+                  "aggr": "sum"
+                }
+              ]
+            },
+            "helium": {}
+          },
+          "1": {
+            "graph": {
+              "mode": "table",
+              "height": 86.0,
+              "optionOpen": false
+            }
+          }
+        },
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TABLE",
+            "data": "gender\twinter participants\tpercentage\nMen\t33485\t68.95\nWomen\t15079\t31.05\n"
+          },
+          {
+            "type": "TEXT",
+            "data": ""
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1591481251033_2095729534",
+      "id": "20210701-174412_1886753279",
+      "dateCreated": "2021-07-01 17:44:12.000",
+      "dateStarted": "2020-06-12 01:54:27.000",
+      "dateFinished": "2020-06-12 01:54:36.000",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Problem 10: Countries participation at Summer Olympic Games over the years",
+      "text": "%sql\n--Problem 10: Countries participation at Summer Olympic Games over the years\nselect Year, count(a.cc) `Countries Participated`\nfrom\n(\nselect  Year, count(distinct NOC) as cc\nfrom athletes \nwhere Season \u003d \u0027Summer\u0027\nGroup by Year,NOC) a\nGroup by Year\norder by Year",
+      "user": "anonymous",
+      "dateUpdated": "2021-07-01 17:44:12.000",
+      "config": {
+        "editorSetting": {
+          "language": "sql",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 6.0,
+        "editorMode": "ace/mode/sql",
+        "fontSize": 9.0,
+        "editorHide": false,
+        "title": true,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "multiBarChart",
+              "height": 384.0,
+              "optionOpen": false,
+              "setting": {
+                "table": {
+                  "tableGridState": {},
+                  "tableColumnTypeState": {
+                    "names": {
+                      "Year": "string",
+                      "Countries Participated": "string"
+                    },
+                    "updated": false
+                  },
+                  "tableOptionSpecHash": "[{\"name\":\"useFilter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable filter for columns\"},{\"name\":\"showPagination\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable pagination for better navigation\"},{\"name\":\"showAggregationFooter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable a footer for displaying aggregated values\"}]",
+                  "tableOptionValue": {
+                    "useFilter": false,
+                    "showPagination": false,
+                    "showAggregationFooter": false
+                  },
+                  "updated": false,
+                  "initialized": false
+                },
+                "multiBarChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "default"
+                },
+                "pieChart": {}
+              },
+              "commonSetting": {},
+              "keys": [
+                {
+                  "name": "Year",
+                  "index": 0.0,
+                  "aggr": "sum"
+                }
+              ],
+              "groups": [],
+              "values": [
+                {
+                  "name": "Countries Participated",
+                  "index": 1.0,
+                  "aggr": "sum"
+                }
+              ]
+            },
+            "helium": {}
+          }
+        },
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TABLE",
+            "data": "Year\tCountries Participated\n1896\t12\n1900\t31\n1904\t15\n1906\t21\n1908\t22\n1912\t29\n1920\t29\n1924\t45\n1928\t46\n1932\t47\n1936\t49\n1948\t59\n1952\t69\n1956\t72\n1960\t84\n1964\t93\n1968\t112\n1972\t121\n1976\t92\n1980\t80\n1984\t140\n1988\t159\n1992\t169\n1996\t197\n2000\t200\n2004\t201\n2008\t204\n2012\t205\n2016\t207\n"
+          },
+          {
+            "type": "TEXT",
+            "data": ""
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1591481251033_-1890888498",
+      "id": "20210701-174412_1923687593",
+      "dateCreated": "2021-07-01 17:44:12.000",
+      "dateStarted": "2020-06-12 01:54:36.000",
+      "dateFinished": "2020-06-12 01:54:45.000",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Problem 11: Nations with highest number of participation in summer Olympics",
+      "text": "%sql\n--Problem 11: Nations with highest number of participation in summer Olympics\nselect a.region as Country, count(a.cc) as `Times Participated`\nfrom\n(select region, count(distinct ath.NOC) as cc\nfrom athletes ath\ninner join regions reg on ath.NOC \u003d reg.NOC\nwhere Season \u003d \u0027Summer\u0027\ngroup by reg.region, Year) a\ngroup by region\norder by count(a.cc) desc\nlimit 50\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-07-01 17:44:12.000",
+      "config": {
+        "editorSetting": {
+          "language": "sql",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 6.0,
+        "editorMode": "ace/mode/sql",
+        "fontSize": 9.0,
+        "editorHide": false,
+        "title": true,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "multiBarChart",
+              "height": 356.0,
+              "optionOpen": false,
+              "setting": {
+                "table": {
+                  "tableGridState": {},
+                  "tableColumnTypeState": {
+                    "names": {
+                      "Country": "string",
+                      "Times Participated": "string"
+                    },
+                    "updated": false
+                  },
+                  "tableOptionSpecHash": "[{\"name\":\"useFilter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable filter for columns\"},{\"name\":\"showPagination\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable pagination for better navigation\"},{\"name\":\"showAggregationFooter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable a footer for displaying aggregated values\"}]",
+                  "tableOptionValue": {
+                    "useFilter": false,
+                    "showPagination": false,
+                    "showAggregationFooter": false
+                  },
+                  "updated": false,
+                  "initialized": false
+                },
+                "multiBarChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "default"
+                },
+                "stackedAreaChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "default"
+                },
+                "lineChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "default"
+                }
+              },
+              "commonSetting": {},
+              "keys": [
+                {
+                  "name": "Country",
+                  "index": 0.0,
+                  "aggr": "sum"
+                }
+              ],
+              "groups": [],
+              "values": [
+                {
+                  "name": "Times Participated",
+                  "index": 1.0,
+                  "aggr": "sum"
+                }
+              ]
+            },
+            "helium": {}
+          },
+          "1": {
+            "graph": {
+              "mode": "table",
+              "height": 86.0,
+              "optionOpen": false
+            }
+          }
+        },
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TABLE",
+            "data": "Country\tTimes Participated\nFrance\t29\nGreece\t29\nAustralia\t29\nUK\t29\nItaly\t29\nSwitzerland\t29\nDenmark\t28\nUSA\t28\nAustria\t28\nSweden\t28\nHungary\t27\nCanada\t27\nBelgium\t27\nNorway\t27\nNetherlands\t27\nFinland\t26\nCzech Republic\t26\nGermany\t26\nLuxembourg\t25\nIndia\t24\nPortugal\t24\nNew Zealand\t24\nArgentina\t24\nBrazil\t23\nMexico\t23\nSerbia\t23\nTurkey\t23\nSpain\t23\nPoland\t22\nJapan\t22\nRomania\t22\nChile\t22\nPhilippines\t21\nEgypt\t21\nIreland\t21\nIceland\t21\nMonaco\t21\nCuba\t21\nUruguay\t21\nColombia\t20\nPeru\t20\nBulgaria\t20\nRussia\t20\nChina\t19\nSouth Africa\t19\nVenezuela\t19\nTrinidad\t18\nBermuda\t18\nPuerto Rico\t18\nMyanmar\t17\n"
+          },
+          {
+            "type": "TEXT",
+            "data": ""
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1591481251034_-457118349",
+      "id": "20210701-174412_988690146",
+      "dateCreated": "2021-07-01 17:44:12.000",
+      "dateStarted": "2020-06-12 01:54:45.000",
+      "dateFinished": "2020-06-12 01:54:59.000",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Problem 12: (a)Host cities for summer olympics",
+      "text": "%sql\nselect  a.City, count(a.cc) `Hosted times`\nfrom\n(\nselect City, count(distinct City) as cc\nfrom  athletes\nwhere Season \u003d \u0027Summer\u0027\ngroup by City,Year) a\ngroup by City\norder by count(a.cc) desc\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-07-01 17:44:12.000",
+      "config": {
+        "editorSetting": {
+          "language": "sql",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 6.0,
+        "editorMode": "ace/mode/sql",
+        "fontSize": 9.0,
+        "editorHide": false,
+        "title": true,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "multiBarChart",
+              "height": 300.0,
+              "optionOpen": false,
+              "setting": {
+                "table": {
+                  "tableGridState": {},
+                  "tableColumnTypeState": {
+                    "names": {
+                      "City": "string",
+                      "Hosted times": "string"
+                    },
+                    "updated": false
+                  },
+                  "tableOptionSpecHash": "[{\"name\":\"useFilter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable filter for columns\"},{\"name\":\"showPagination\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable pagination for better navigation\"},{\"name\":\"showAggregationFooter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable a footer for displaying aggregated values\"}]",
+                  "tableOptionValue": {
+                    "useFilter": false,
+                    "showPagination": false,
+                    "showAggregationFooter": false
+                  },
+                  "updated": false,
+                  "initialized": false
+                },
+                "multiBarChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "default"
+                },
+                "stackedAreaChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "default"
+                }
+              },
+              "commonSetting": {},
+              "keys": [
+                {
+                  "name": "City",
+                  "index": 0.0,
+                  "aggr": "sum"
+                }
+              ],
+              "groups": [],
+              "values": [
+                {
+                  "name": "Hosted times",
+                  "index": 1.0,
+                  "aggr": "sum"
+                }
+              ]
+            },
+            "helium": {}
+          }
+        },
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TABLE",
+            "data": "City\tHosted times\nAthina\t3\nLondon\t3\nLos Angeles\t2\nStockholm\t2\nParis\t2\nBeijing\t1\nBerlin\t1\nSt. Louis\t1\nMontreal\t1\nMexico City\t1\nRoma\t1\nSydney\t1\nAtlanta\t1\nTokyo\t1\nMelbourne\t1\nSeoul\t1\nBarcelona\t1\nAmsterdam\t1\nMoskva\t1\nHelsinki\t1\nAntwerpen\t1\nRio de Janeiro\t1\nMunich\t1\n"
+          },
+          {
+            "type": "TEXT",
+            "data": ""
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1591481251034_-673512270",
+      "id": "20210701-174412_217931355",
+      "dateCreated": "2021-07-01 17:44:12.000",
+      "dateStarted": "2020-06-12 01:54:59.000",
+      "dateFinished": "2020-06-12 01:55:03.000",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Problem 12: (b)Host cities for and winter olympic",
+      "text": "%sql\nselect  a.City, count(a.cc) `Hosted times`\nfrom\n(\nselect City, COUNT(distinct City) as cc\nfrom  athletes\nwhere Season \u003d \u0027Winter\u0027\ngroup by City,Year) a\ngroup by City\norder by count(a.cc) desc\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-07-01 17:44:12.000",
+      "config": {
+        "editorSetting": {
+          "language": "sql",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 6.0,
+        "editorMode": "ace/mode/sql",
+        "fontSize": 9.0,
+        "editorHide": false,
+        "title": true,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "table",
+              "height": 300.0,
+              "optionOpen": false,
+              "setting": {
+                "table": {
+                  "tableGridState": {},
+                  "tableColumnTypeState": {
+                    "names": {
+                      "City": "string",
+                      "Hosted times": "string"
+                    },
+                    "updated": false
+                  },
+                  "tableOptionSpecHash": "[{\"name\":\"useFilter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable filter for columns\"},{\"name\":\"showPagination\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable pagination for better navigation\"},{\"name\":\"showAggregationFooter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable a footer for displaying aggregated values\"}]",
+                  "tableOptionValue": {
+                    "useFilter": false,
+                    "showPagination": false,
+                    "showAggregationFooter": false
+                  },
+                  "updated": false,
+                  "initialized": false
+                },
+                "multiBarChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "default"
+                }
+              },
+              "commonSetting": {},
+              "keys": [
+                {
+                  "name": "City",
+                  "index": 0.0,
+                  "aggr": "sum"
+                }
+              ],
+              "groups": [],
+              "values": [
+                {
+                  "name": "Hosted times",
+                  "index": 1.0,
+                  "aggr": "sum"
+                }
+              ]
+            },
+            "helium": {}
+          }
+        },
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TABLE",
+            "data": "City\tHosted times\nLake Placid\t2\nSankt Moritz\t2\nInnsbruck\t2\nGrenoble\t1\nSquaw Valley\t1\nSarajevo\t1\nOslo\t1\nSochi\t1\nChamonix\t1\nAlbertville\t1\nLillehammer\t1\nNagano\t1\nVancouver\t1\nCortina d\u0027Ampezzo\t1\nCalgary\t1\nSapporo\t1\nGarmisch-Partenkirchen\t1\nTorino\t1\nSalt Lake City\t1\n"
+          },
+          {
+            "type": "TEXT",
+            "data": ""
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1591481251034_-1616127980",
+      "id": "20210701-174412_1021968606",
+      "dateCreated": "2021-07-01 17:44:12.000",
+      "dateStarted": "2020-06-12 01:55:03.000",
+      "dateFinished": "2020-06-12 01:55:07.000",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Problem 13: Average age by sport category",
+      "text": "%sql\nselect Distinct a.Sport, round(avg(a.avg_age),2) as `Average Age`\nfrom\n(\nselect Distinct Sport, ID, avg(Age) as avg_age\nfrom athletes\nwhere Age \u003c\u003e \u0027NA\u0027 \ngroup by Sport,ID,Event\n) a\ngroup by Sport\norder by `Average Age`\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-07-01 17:44:12.000",
+      "config": {
+        "editorSetting": {
+          "language": "sql",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 6.0,
+        "editorMode": "ace/mode/sql",
+        "fontSize": 9.0,
+        "editorHide": false,
+        "title": true,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "table",
+              "height": 304.0,
+              "optionOpen": false,
+              "setting": {
+                "table": {
+                  "tableGridState": {},
+                  "tableColumnTypeState": {
+                    "names": {
+                      "Sport": "string",
+                      "Average Age": "string"
+                    },
+                    "updated": false
+                  },
+                  "tableOptionSpecHash": "[{\"name\":\"useFilter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable filter for columns\"},{\"name\":\"showPagination\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable pagination for better navigation\"},{\"name\":\"showAggregationFooter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable a footer for displaying aggregated values\"}]",
+                  "tableOptionValue": {
+                    "useFilter": false,
+                    "showPagination": false,
+                    "showAggregationFooter": false
+                  },
+                  "updated": false,
+                  "initialized": false
+                },
+                "multiBarChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "default"
+                },
+                "stackedAreaChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "default"
+                }
+              },
+              "commonSetting": {},
+              "keys": [
+                {
+                  "name": "Sport",
+                  "index": 0.0,
+                  "aggr": "sum"
+                }
+              ],
+              "groups": [],
+              "values": [
+                {
+                  "name": "Average Age",
+                  "index": 1.0,
+                  "aggr": "sum"
+                }
+              ]
+            },
+            "helium": {}
+          }
+        },
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TABLE",
+            "data": "Sport\tAverage Age\nRhythmic Gymnastics\t18.54\nSwimming\t20.5\nFigure Skating\t21.81\nDiving\t22.23\nSynchronized Swimming\t22.27\nGymnastics\t22.41\nShort Track Speed Skating\t22.71\nBoxing\t22.91\nAlpine Skiing\t23.11\nSki Jumping\t23.32\nFootball\t23.51\nMilitary Ski Patrol\t23.74\nTaekwondo\t23.93\nSpeed Skating\t24.06\nLuge\t24.1\nNordic Combined\t24.27\nFreestyle Skiing\t24.31\nRugby\t24.41\nCycling\t24.52\nSnowboarding\t24.59\nTrampolining\t24.65\nVolleyball\t24.92\nRowing\t24.97\nAthletics\t25.01\nBasketball\t25.04\nJudo\t25.09\nCanoeing\t25.23\nWeightlifting\t25.25\nWater Polo\t25.29\nBadminton\t25.42\nIce Hockey\t25.5\nHockey\t25.52\nWrestling\t25.6\nTennis\t25.66\nBaseball\t25.94\nCross Country Skiing\t25.97\nHandball\t25.98\nAeronautics\t26.0\nBasque Pelota\t26.0\nRugby Sevens\t26.05\nTable Tennis\t26.07\nSoftball\t26.12\nBiathlon\t26.31\nModern Pentathlon\t26.34\nLacrosse\t26.86\nRacquets\t27.57\nTriathlon\t27.71\nArchery\t28.08\nFencing\t28.3\nBobsleigh\t28.83\nTug-Of-War\t28.91\nBeach Volleyball\t29.02\nCricket\t29.33\nGolf\t29.88\nSkeleton\t29.94\nSailing\t29.98\nCurling\t31.48\nJeu De Paume\t32.45\nCroquet\t32.88\nShooting\t33.12\nEquestrianism\t33.89\nMotorboating\t34.33\nPolo\t35.39\nAlpinism\t38.81\nArt Competitions\t44.59\nRoque\t53.33\n"
+          },
+          {
+            "type": "TEXT",
+            "data": ""
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1591481251034_1939328547",
+      "id": "20210701-174412_1618338547",
+      "dateCreated": "2021-07-01 17:44:12.000",
+      "dateStarted": "2020-06-12 01:55:08.000",
+      "dateFinished": "2020-06-12 01:56:05.000",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Problem 14: Top 10 athlethes with most medals in summer Olympics",
+      "text": "%sql\nselect Name, count(Medal) as `Total Medals`\nfrom athletes\nwhere Medal \u003c\u003e \u0027NA\u0027\nand Season \u003d \u0027Summer\u0027\ngroup by Name\norder by `Total Medals` desc\nlimit 10\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-07-01 17:44:12.000",
+      "config": {
+        "lineNumbers": true,
+        "tableHide": false,
+        "editorSetting": {
+          "language": "sql",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 6.0,
+        "editorMode": "ace/mode/sql",
+        "fontSize": 9.0,
+        "editorHide": false,
+        "title": true,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "table",
+              "height": 324.0,
+              "optionOpen": false,
+              "setting": {
+                "table": {
+                  "tableGridState": {},
+                  "tableColumnTypeState": {
+                    "names": {
+                      "Name": "string",
+                      "Total Medals": "string"
+                    },
+                    "updated": false
+                  },
+                  "tableOptionSpecHash": "[{\"name\":\"useFilter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable filter for columns\"},{\"name\":\"showPagination\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable pagination for better navigation\"},{\"name\":\"showAggregationFooter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable a footer for displaying aggregated values\"}]",
+                  "tableOptionValue": {
+                    "useFilter": false,
+                    "showPagination": false,
+                    "showAggregationFooter": false
+                  },
+                  "updated": false,
+                  "initialized": false
+                },
+                "multiBarChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "default"
+                },
+                "stackedAreaChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "default"
+                }
+              },
+              "commonSetting": {},
+              "keys": [
+                {
+                  "name": "Name",
+                  "index": 0.0,
+                  "aggr": "sum"
+                }
+              ],
+              "groups": [],
+              "values": [
+                {
+                  "name": "Total Medals",
+                  "index": 1.0,
+                  "aggr": "sum"
+                }
+              ]
+            },
+            "helium": {}
+          },
+          "1": {
+            "graph": {
+              "mode": "table",
+              "height": 86.0,
+              "optionOpen": false
+            }
+          }
+        },
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TABLE",
+            "data": "Name\tTotal Medals\nMichael Fred Phelps, II\t28\nLarysa Semenivna Latynina (Diriy-)\t18\nNikolay Yefimovich Andrianov\t15\nBorys Anfiyanovych Shakhlin\t13\nTakashi Ono\t13\nEdoardo Mangiarotti\t13\nNatalie Anne Coughlin (-Hall)\t12\nRyan Steven Lochte\t12\nDara Grace Torres (-Hoffman, -Minas)\t12\nJennifer Elisabeth Jenny Thompson (-Cumpelik)\t12\n"
+          },
+          {
+            "type": "TEXT",
+            "data": ""
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1591481251034_-1332751966",
+      "id": "20210701-174412_499678299",
+      "dateCreated": "2021-07-01 17:44:12.000",
+      "dateStarted": "2020-06-12 01:56:05.000",
+      "dateFinished": "2020-06-12 01:56:09.000",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Problem 15: Turkey in Summer Olympics",
+      "text": "%sql\nselect  region as Country,Year, count(a.cc) as `Athletes Participated`\nfrom\n(\nselect Distinct ID, region, Year ,COUNT( distinct ath.ID) cc\nfrom athletes ath\ninner join regions reg on ath.NOC \u003d reg.NOC\nwhere ath.NOC \u003d \u0027TUR\u0027 and Season \u003d \u0027Summer\u0027\ngroup by region, ID,Year) a\ngroup by region, Year\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-07-01 17:44:12.000",
+      "config": {
+        "editorSetting": {
+          "language": "sql",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 6.0,
+        "editorMode": "ace/mode/sql",
+        "fontSize": 9.0,
+        "editorHide": false,
+        "title": true,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "lineChart",
+              "height": 424.0,
+              "optionOpen": false,
+              "setting": {
+                "table": {
+                  "tableGridState": {},
+                  "tableColumnTypeState": {
+                    "names": {
+                      "Country": "string",
+                      "Year": "string",
+                      "Athletes Participated": "string"
+                    },
+                    "updated": false
+                  },
+                  "tableOptionSpecHash": "[{\"name\":\"useFilter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable filter for columns\"},{\"name\":\"showPagination\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable pagination for better navigation\"},{\"name\":\"showAggregationFooter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable a footer for displaying aggregated values\"}]",
+                  "tableOptionValue": {
+                    "useFilter": false,
+                    "showPagination": false,
+                    "showAggregationFooter": false
+                  },
+                  "updated": false,
+                  "initialized": false
+                },
+                "multiBarChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "default"
+                },
+                "stackedAreaChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "default"
+                },
+                "lineChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "default"
+                }
+              },
+              "commonSetting": {},
+              "keys": [
+                {
+                  "name": "Year",
+                  "index": 1.0,
+                  "aggr": "sum"
+                }
+              ],
+              "groups": [],
+              "values": [
+                {
+                  "name": "Athletes Participated",
+                  "index": 2.0,
+                  "aggr": "sum"
+                }
+              ]
+            },
+            "helium": {}
+          }
+        },
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TABLE",
+            "data": "Country\tYear\tAthletes Participated\nTurkey\t2004\t64\nTurkey\t1912\t2\nTurkey\t1964\t23\nTurkey\t1932\t1\nTurkey\t1968\t29\nTurkey\t1906\t1\nTurkey\t2012\t112\nTurkey\t1972\t43\nTurkey\t1984\t46\nTurkey\t1960\t49\nTurkey\t1936\t48\nTurkey\t2016\t100\nTurkey\t1992\t41\nTurkey\t1924\t22\nTurkey\t1996\t53\nTurkey\t1976\t27\nTurkey\t1988\t41\nTurkey\t1948\t58\nTurkey\t1956\t19\nTurkey\t1952\t51\nTurkey\t2000\t57\nTurkey\t2008\t67\nTurkey\t1928\t31\n"
+          },
+          {
+            "type": "TEXT",
+            "data": ""
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1591481251035_-1378553305",
+      "id": "20210701-174412_231304959",
+      "dateCreated": "2021-07-01 17:44:12.000",
+      "dateStarted": "2020-06-12 01:56:09.000",
+      "dateFinished": "2020-06-12 01:56:18.000",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "KA5 (ML) : Kısım 1 (Regresyon Analizi): Daha once kullanmıs oldugunuz (kesif aktivitesi 1 spreadsheet) veriseti üzerindeki kolonlar (Nümerik predictors ve nümerik cikti) arasındaki pozitif ve negatif korelasyonu bulunuz. r veya R^2 değerlerini belirleyiniz",
+      "text": "%md\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-07-01 17:44:12.000",
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/markdown",
+        "fontSize": 9.0,
+        "editorHide": false,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "jobName": "paragraph_1591481251035_-1008126911",
+      "id": "20210701-174412_971173892",
+      "dateCreated": "2021-07-01 17:44:12.000",
+      "dateStarted": "2021-03-08 14:02:49.000",
+      "dateFinished": "2021-03-08 14:02:49.000",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Load dataset",
+      "text": "%pyspark\nfrom pyspark.ml.linalg import Vectors\nfrom pyspark.ml.stat import Correlation\nimport numpy as np\nimport pandas as pd\n\ntop100_athletes \u003d pd.read_csv(\"top100_athletes.csv\", sep\u003d\u0027;\u0027)\ntop100_athletes.head(5)",
+      "user": "anonymous",
+      "dateUpdated": "2021-07-01 17:44:12.000",
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9.0,
+        "editorHide": false,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "                                 Name  Gold  Silver  Bronze  Total\n0             Michael Fred Phelps, II  23.0     3.0     2.0     28\n1  Larysa Semenivna Latynina (Diriy-)   9.0     5.0     4.0     18\n2        Nikolay Yefimovich Andrianov   7.0     5.0     3.0     15\n3                 Edoardo Mangiarotti   6.0     5.0     2.0     13\n4         Borys Anfiyanovych Shakhlin   7.0     4.0     2.0     13"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1591907108540_-893896633",
+      "id": "20210701-174412_1836166205",
+      "dateCreated": "2021-07-01 17:44:12.000",
+      "dateStarted": "2020-06-12 02:01:32.000",
+      "dateFinished": "2020-06-12 02:01:32.000",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Convert pandas dataframe to RDD",
+      "text": "%pyspark\ntop100_spDF \u003d sqlContext.createDataFrame(top100_athletes)\ntop100_spDF.show(5)",
+      "user": "anonymous",
+      "dateUpdated": "2021-07-01 17:44:12.000",
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9.0,
+        "editorHide": false,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+--------------------+----+------+------+-----+\n|                Name|Gold|Silver|Bronze|Total|\n+--------------------+----+------+------+-----+\n|Michael Fred Phel...|23.0|   3.0|   2.0|   28|\n|Larysa Semenivna ...| 9.0|   5.0|   4.0|   18|\n|Nikolay Yefimovic...| 7.0|   5.0|   3.0|   15|\n| Edoardo Mangiarotti| 6.0|   5.0|   2.0|   13|\n|Borys Anfiyanovyc...| 7.0|   4.0|   2.0|   13|\n+--------------------+----+------+------+-----+\nonly showing top 5 rows\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1591907533339_-1770190777",
+      "id": "20210701-174412_523586247",
+      "dateCreated": "2021-07-01 17:44:12.000",
+      "dateStarted": "2020-06-12 01:57:44.000",
+      "dateFinished": "2020-06-12 01:57:45.000",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "",
+      "text": "%pyspark\ntop100_num \u003d top100_spDF[[\"Gold\",\"Silver\",\"Bronze\",\"Total\"]]\ntop100_num.show(5)",
+      "user": "anonymous",
+      "dateUpdated": "2021-07-01 17:44:12.000",
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9.0,
+        "editorHide": false,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+----+------+------+-----+\n|Gold|Silver|Bronze|Total|\n+----+------+------+-----+\n|23.0|   3.0|   2.0|   28|\n| 9.0|   5.0|   4.0|   18|\n| 7.0|   5.0|   3.0|   15|\n| 6.0|   5.0|   2.0|   13|\n| 7.0|   4.0|   2.0|   13|\n+----+------+------+-----+\nonly showing top 5 rows\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1591911201395_-1046699210",
+      "id": "20210701-174412_1363270976",
+      "dateCreated": "2021-07-01 17:44:12.000",
+      "dateStarted": "2020-06-12 01:57:49.000",
+      "dateFinished": "2020-06-12 01:57:49.000",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "",
+      "text": "%pyspark\n#Dataframe to vector for correlation\nfrom pyspark.ml.feature import VectorAssembler\nnewdb \u003d VectorAssembler(inputCols\u003d[\"Gold\", \"Silver\", \"Bronze\",\u0027Total\u0027], outputCol\u003d\"features\").transform(top100_num)\n\nnumeric_df \u003d newdb.select(\"features\")\nnumeric_df.show(5)\n\n\n\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-07-01 17:44:12.000",
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9.0,
+        "editorHide": false,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+-------------------+\n|           features|\n+-------------------+\n|[23.0,3.0,2.0,28.0]|\n| [9.0,5.0,4.0,18.0]|\n| [7.0,5.0,3.0,15.0]|\n| [6.0,5.0,2.0,13.0]|\n| [7.0,4.0,2.0,13.0]|\n+-------------------+\nonly showing top 5 rows\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1591907332775_-273478929",
+      "id": "20210701-174412_735436072",
+      "dateCreated": "2021-07-01 17:44:12.000",
+      "dateStarted": "2020-06-12 01:57:52.000",
+      "dateFinished": "2020-06-12 01:57:53.000",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Pearson Correlation Matrix",
+      "text": "%pyspark\nfrom pyspark.ml.linalg import Vectors\nfrom pyspark.ml.stat import Correlation\nimport numpy as np\n\nr1 \u003d Correlation.corr(numeric_df, \"features\").head()\nprint(\"Pearson correlation matrix:\\n\" + str(r1[0]))\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-07-01 17:44:12.000",
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9.0,
+        "editorHide": false,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "Pearson correlation matrix:\nDenseMatrix([[ 1.        , -0.26055523, -0.26435052,  0.75048192],\n             [-0.26055523,  1.        , -0.1333802 ,  0.20542508],\n             [-0.26435052, -0.1333802 ,  1.        ,  0.19857129],\n             [ 0.75048192,  0.20542508,  0.19857129,  1.        ]])\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1591911583516_-94681931",
+      "id": "20210701-174412_1717843310",
+      "dateCreated": "2021-07-01 17:44:12.000",
+      "dateStarted": "2020-06-12 01:57:59.000",
+      "dateFinished": "2020-06-12 01:58:01.000",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Spearman Correlation Matrix",
+      "text": "%pyspark\nr2 \u003d Correlation.corr(numeric_df, \"features\", \"spearman\").head()\nprint(\"Spearman correlation matrix:\\n\" + str(r2[0]))",
+      "user": "anonymous",
+      "dateUpdated": "2021-07-01 17:44:12.000",
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9.0,
+        "editorHide": false,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "Spearman correlation matrix:\nDenseMatrix([[ 1.        , -0.35503045, -0.30352268,  0.51668991],\n             [-0.35503045,  1.        , -0.16412861,  0.24557694],\n             [-0.30352268, -0.16412861,  1.        ,  0.18467777],\n             [ 0.51668991,  0.24557694,  0.18467777,  1.        ]])\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1591912846148_-1879049486",
+      "id": "20210701-174412_504967756",
+      "dateCreated": "2021-07-01 17:44:12.000",
+      "dateStarted": "2020-06-12 01:58:04.000",
+      "dateFinished": "2020-06-12 01:58:06.000",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "",
+      "text": "%pyspark\n# Gold - Total (R Squared) daha sonra\n\ndf_feat \u003d VectorAssembler(inputCols\u003d[\"Gold\"], outputCol\u003d\"features\").transform(top100_num)\ndf_feat2 \u003d df_feat.select(\"features\")\ndf_feat2.show(5)",
+      "user": "anonymous",
+      "dateUpdated": "2021-07-01 17:44:12.000",
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9.0,
+        "editorHide": false,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+--------+\n|features|\n+--------+\n|  [23.0]|\n|   [9.0]|\n|   [7.0]|\n|   [6.0]|\n|   [7.0]|\n+--------+\nonly showing top 5 rows\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1591914657085_-779598772",
+      "id": "20210701-174412_1742321406",
+      "dateCreated": "2021-07-01 17:44:12.000",
+      "dateStarted": "2020-06-12 01:58:18.000",
+      "dateFinished": "2020-06-12 01:58:19.000",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "",
+      "text": "%pyspark\n#Gold - Total (R Squared\nfrom pyspark.ml.feature import VectorAssembler\n\nvectorAssembler \u003d VectorAssembler(inputCols \u003d [\u0027Gold\u0027, \u0027Silver\u0027, \u0027Bronze\u0027], outputCol \u003d \u0027output\u0027)\nnewdb2 \u003d vectorAssembler.transform(df_feat)\nnewdb3 \u003d newdb2.select([\u0027features\u0027, \u0027Total\u0027])\nnewdb3.show(3)",
+      "user": "anonymous",
+      "dateUpdated": "2021-07-01 17:44:12.000",
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9.0,
+        "editorHide": false,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+--------+-----+\n|features|Total|\n+--------+-----+\n|  [23.0]|   28|\n|   [9.0]|   18|\n|   [7.0]|   15|\n+--------+-----+\nonly showing top 3 rows\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1591913446783_-1495694486",
+      "id": "20210701-174412_1724592949",
+      "dateCreated": "2021-07-01 17:44:12.000",
+      "dateStarted": "2020-06-12 01:58:54.000",
+      "dateFinished": "2020-06-12 01:58:55.000",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "",
+      "text": "%pyspark\nsplits \u003d newdb3.randomSplit([0.8, 0.2])\ntrain_df \u003d splits[0]\ntest_df \u003d splits[1]",
+      "user": "anonymous",
+      "dateUpdated": "2021-07-01 17:44:12.000",
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9.0,
+        "editorHide": false,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "jobName": "paragraph_1591914024798_1294366291",
+      "id": "20210701-174412_1043205127",
+      "dateCreated": "2021-07-01 17:44:12.000",
+      "dateStarted": "2020-06-12 01:58:58.000",
+      "dateFinished": "2020-06-12 01:58:58.000",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Linear Regression",
+      "text": "%pyspark\nfrom pyspark.ml.regression import LinearRegression\nlr \u003d LinearRegression(featuresCol \u003d \u0027features\u0027, labelCol\u003d\u0027Total\u0027, maxIter\u003d10, regParam\u003d0.3, elasticNetParam\u003d0.8)\nlr_model \u003d lr.fit(train_df)\nprint(\"Coefficients: \" + str(lr_model.coefficients))\nprint(\"Intercept: \" + str(lr_model.intercept))",
+      "user": "anonymous",
+      "dateUpdated": "2021-07-01 17:44:12.000",
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9.0,
+        "editorHide": false,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "Coefficients: [0.6405220976916727]\nIntercept: 6.374551811740464\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1591914081254_-1548973699",
+      "id": "20210701-174412_1888475251",
+      "dateCreated": "2021-07-01 17:44:12.000",
+      "dateStarted": "2020-06-12 01:59:00.000",
+      "dateFinished": "2020-06-12 01:59:02.000",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "R squared of Gold medals and Total medals",
+      "text": "%pyspark\ntrainingSummary \u003d lr_model.summary\nprint(\"RMSE: %f\" % trainingSummary.rootMeanSquaredError)\nprint(\"r2: %f\" % trainingSummary.r2)",
+      "user": "anonymous",
+      "dateUpdated": "2021-07-01 17:44:12.000",
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9.0,
+        "editorHide": false,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "RMSE: 1.862437\nr2: 0.567717\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1591913242374_-1302456734",
+      "id": "20210701-174412_458941070",
+      "dateCreated": "2021-07-01 17:44:12.000",
+      "dateStarted": "2020-06-12 01:59:05.000",
+      "dateFinished": "2020-06-12 01:59:05.000",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "KA5 (ML) : Kısım 2 (Ekteki verisetlerinden biri üzerinde herhangi bir sınıflandırma algoritması gerçekleme) Sectiginiz verisetini Google Drive\u0027da belirtiniz. Her kişi farklı veriseti seçmelidir. Veriseti üzerinde gerekiyorsa birtakım önişlemler yapılmalı, bir sınıflandırma modeli olusturularak modelin performansı çeşitli metriklerle sunulmalıdır",
+      "text": "%md\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-07-01 17:44:12.000",
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/markdown",
+        "fontSize": 9.0,
+        "editorHide": false,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "jobName": "paragraph_1591481765251_257389202",
+      "id": "20210701-174412_916175284",
+      "dateCreated": "2021-07-01 17:44:12.000",
+      "dateStarted": "2021-03-08 14:02:49.000",
+      "dateFinished": "2021-03-08 14:02:49.000",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Load dataset",
+      "text": "%pyspark\nimport pandas as pd\nfrom pyspark.mllib.classification import NaiveBayes, NaiveBayesModel\nfrom pyspark.mllib.util import MLUtils\n\ndr_test \u003d pd.read_csv(\"drugLibTest_raw.tsv\",sep\u003d\u0027\\t\u0027)\ndr_train \u003d pd.read_csv(\"drugLibTrain_raw.tsv\",sep\u003d\u0027\\t\u0027)\n\ndrug_data \u003d  pd.concat([dr_train, dr_test])\n\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-07-01 17:44:12.000",
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9.0,
+        "editorHide": false,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "jobName": "paragraph_1591490864763_137246400",
+      "id": "20210701-174412_472862800",
+      "dateCreated": "2021-07-01 17:44:12.000",
+      "dateStarted": "2020-06-16 19:48:48.000",
+      "dateFinished": "2020-06-16 19:48:48.000",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "",
+      "text": "%pyspark\ndrug_data \u003d drug_data.dropna()",
+      "user": "anonymous",
+      "dateUpdated": "2021-07-01 17:44:12.000",
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9.0,
+        "editorHide": false,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "jobName": "paragraph_1592249929719_-1793197859",
+      "id": "20210701-174412_1978749503",
+      "dateCreated": "2021-07-01 17:44:12.000",
+      "dateStarted": "2020-06-16 19:49:12.000",
+      "dateFinished": "2020-06-16 19:49:12.000",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Convert pandas dataframe to RDD",
+      "text": "%pyspark\ndrug_data_spDF \u003d sqlContext.createDataFrame(drug_data)\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-07-01 17:44:12.000",
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9.0,
+        "editorHide": false,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "jobName": "paragraph_1592249576275_-235604456",
+      "id": "20210701-174412_731145471",
+      "dateCreated": "2021-07-01 17:44:12.000",
+      "dateStarted": "2020-06-16 20:00:15.000",
+      "dateFinished": "2020-06-16 20:00:16.000",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "",
+      "text": "%pyspark\ndrug_train_spDF.show(5)\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-07-01 17:44:12.000",
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9.0,
+        "editorHide": false,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+----------+----------------+------+--------------------+-------------------+--------------------+--------------------+--------------------+--------------------+\n|Unnamed: 0|     urlDrugName|rating|       effectiveness|        sideEffects|           condition|      benefitsReview|   sideEffectsReview|      commentsReview|\n+----------+----------------+------+--------------------+-------------------+--------------------+--------------------+--------------------+--------------------+\n|      2202|       enalapril|     4|    Highly Effective|  Mild Side Effects|management of con...|slowed the progre...|cough, hypotensio...|monitor blood pre...|\n|      3117|ortho-tri-cyclen|     1|    Highly Effective|Severe Side Effects|    birth prevention|Although this typ...|Heavy Cycle, Cram...|I Hate This Birth...|\n|      1146|         ponstel|    10|    Highly Effective|    No Side Effects|    menstrual cramps|I was used to hav...|Heavier bleeding ...|I took 2 pills at...|\n|      3947|        prilosec|     3|Marginally Effective|  Mild Side Effects|         acid reflux|The acid reflux w...|Constipation, dry...|I was given Prilo...|\n|      1951|          lyrica|     2|Marginally Effective|Severe Side Effects|        fibromyalgia|I think that the ...|I felt extremely ...|           See above|\n+----------+----------------+------+--------------------+-------------------+--------------------+--------------------+--------------------+--------------------+\nonly showing top 5 rows\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1591490873714_135891247",
+      "id": "20210701-174412_832197570",
+      "dateCreated": "2021-07-01 17:44:12.000",
+      "dateStarted": "2020-06-16 20:00:19.000",
+      "dateFinished": "2020-06-16 20:00:19.000",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "dataframe info",
+      "text": "%pyspark\ndrug_data_spDF.toPandas().info()",
+      "user": "anonymous",
+      "dateUpdated": "2021-07-01 17:44:12.000",
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9.0,
+        "editorHide": false,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "\u003cclass \u0027pandas.core.frame.DataFrame\u0027\u003e\nRangeIndex: 4132 entries, 0 to 4131\nData columns (total 9 columns):\n #   Column             Non-Null Count  Dtype \n---  ------             --------------  ----- \n 0   Unnamed: 0         4132 non-null   int64 \n 1   urlDrugName        4132 non-null   object\n 2   rating             4132 non-null   int64 \n 3   effectiveness      4132 non-null   object\n 4   sideEffects        4132 non-null   object\n 5   condition          4132 non-null   object\n 6   benefitsReview     4132 non-null   object\n 7   sideEffectsReview  4132 non-null   object\n 8   commentsReview     4132 non-null   object\ndtypes: int64(2), object(7)\nmemory usage: 290.7+ KB\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1591490891251_700427706",
+      "id": "20210701-174412_261054419",
+      "dateCreated": "2021-07-01 17:44:12.000",
+      "dateStarted": "2020-06-16 20:00:26.000",
+      "dateFinished": "2020-06-16 20:00:28.000",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Drop Unnamed column for the test and train dataframes",
+      "text": "%pyspark\ndata_spDF \u003d drug_data_spDF.drop(\u0027Unnamed: 0\u0027)\ndata_spDF.show(5)",
+      "user": "anonymous",
+      "dateUpdated": "2021-07-01 17:44:12.000",
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9.0,
+        "editorHide": false,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+----------------+------+--------------------+-------------------+--------------------+--------------------+--------------------+--------------------+\n|     urlDrugName|rating|       effectiveness|        sideEffects|           condition|      benefitsReview|   sideEffectsReview|      commentsReview|\n+----------------+------+--------------------+-------------------+--------------------+--------------------+--------------------+--------------------+\n|       enalapril|     4|    Highly Effective|  Mild Side Effects|management of con...|slowed the progre...|cough, hypotensio...|monitor blood pre...|\n|ortho-tri-cyclen|     1|    Highly Effective|Severe Side Effects|    birth prevention|Although this typ...|Heavy Cycle, Cram...|I Hate This Birth...|\n|         ponstel|    10|    Highly Effective|    No Side Effects|    menstrual cramps|I was used to hav...|Heavier bleeding ...|I took 2 pills at...|\n|        prilosec|     3|Marginally Effective|  Mild Side Effects|         acid reflux|The acid reflux w...|Constipation, dry...|I was given Prilo...|\n|          lyrica|     2|Marginally Effective|Severe Side Effects|        fibromyalgia|I think that the ...|I felt extremely ...|           See above|\n+----------------+------+--------------------+-------------------+--------------------+--------------------+--------------------+--------------------+\nonly showing top 5 rows\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1591490903093_-1242720149",
+      "id": "20210701-174412_1680821664",
+      "dateCreated": "2021-07-01 17:44:12.000",
+      "dateStarted": "2020-06-16 20:00:40.000",
+      "dateFinished": "2020-06-16 20:00:41.000",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "",
+      "text": "%pyspark\ndata_spDF.show(10)",
+      "user": "anonymous",
+      "dateUpdated": "2021-07-01 17:44:12.000",
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9.0,
+        "editorHide": false,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+----------------+------+--------------------+--------------------+--------------------+--------------------+--------------------+--------------------+\n|     urlDrugName|rating|       effectiveness|         sideEffects|           condition|      benefitsReview|   sideEffectsReview|      commentsReview|\n+----------------+------+--------------------+--------------------+--------------------+--------------------+--------------------+--------------------+\n|       enalapril|     4|    Highly Effective|   Mild Side Effects|management of con...|slowed the progre...|cough, hypotensio...|monitor blood pre...|\n|ortho-tri-cyclen|     1|    Highly Effective| Severe Side Effects|    birth prevention|Although this typ...|Heavy Cycle, Cram...|I Hate This Birth...|\n|         ponstel|    10|    Highly Effective|     No Side Effects|    menstrual cramps|I was used to hav...|Heavier bleeding ...|I took 2 pills at...|\n|        prilosec|     3|Marginally Effective|   Mild Side Effects|         acid reflux|The acid reflux w...|Constipation, dry...|I was given Prilo...|\n|          lyrica|     2|Marginally Effective| Severe Side Effects|        fibromyalgia|I think that the ...|I felt extremely ...|           See above|\n|        propecia|     1|         Ineffective| Severe Side Effects|           hair loss|after taking prop...|Low sex drive, be...| one pill once daily|\n|         vyvanse|     9|    Highly Effective|   Mild Side Effects|                 add|My mood has notic...|a few experiences...|I had began takin...|\n|          elavil|    10|Considerably Effe...|     No Side Effects|          depression|Although this dru...|               None.|One a day, taken ...|\n|           xanax|    10|    Highly Effective|     No Side Effects|      panic disorder|This simply just ...|I really don\u0027t ha...|I first started t...|\n|        claritin|     1|         Ineffective|Extremely Severe ...|           allergies|none - did nothin...|I had some horrif...|took one 10 mg pi...|\n+----------------+------+--------------------+--------------------+--------------------+--------------------+--------------------+--------------------+\nonly showing top 10 rows\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1592306220552_759724301",
+      "id": "20210701-174412_282417272",
+      "dateCreated": "2021-07-01 17:44:12.000",
+      "dateStarted": "2020-06-16 20:00:52.000",
+      "dateFinished": "2020-06-16 20:00:52.000",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "",
+      "text": "%pyspark\ndata_spDF.printSchema()",
+      "user": "anonymous",
+      "dateUpdated": "2021-07-01 17:44:12.000",
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9.0,
+        "editorHide": false,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "root\n |-- urlDrugName: string (nullable \u003d true)\n |-- rating: long (nullable \u003d true)\n |-- effectiveness: string (nullable \u003d true)\n |-- sideEffects: string (nullable \u003d true)\n |-- condition: string (nullable \u003d true)\n |-- benefitsReview: string (nullable \u003d true)\n |-- sideEffectsReview: string (nullable \u003d true)\n |-- commentsReview: string (nullable \u003d true)\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1592311722281_-1473399554",
+      "id": "20210701-174412_141260574",
+      "dateCreated": "2021-07-01 17:44:12.000",
+      "dateStarted": "2020-06-16 20:00:57.000",
+      "dateFinished": "2020-06-16 20:00:57.000",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "",
+      "text": "%pyspark\ndata_DF \u003d data_spDF.drop(\u0027urlDrugName\u0027)\ndata_DF.show(5)",
+      "user": "anonymous",
+      "dateUpdated": "2021-07-01 17:44:12.000",
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9.0,
+        "editorHide": false,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+------+--------------------+-------------------+--------------------+--------------------+--------------------+--------------------+\n|rating|       effectiveness|        sideEffects|           condition|      benefitsReview|   sideEffectsReview|      commentsReview|\n+------+--------------------+-------------------+--------------------+--------------------+--------------------+--------------------+\n|     4|    Highly Effective|  Mild Side Effects|management of con...|slowed the progre...|cough, hypotensio...|monitor blood pre...|\n|     1|    Highly Effective|Severe Side Effects|    birth prevention|Although this typ...|Heavy Cycle, Cram...|I Hate This Birth...|\n|    10|    Highly Effective|    No Side Effects|    menstrual cramps|I was used to hav...|Heavier bleeding ...|I took 2 pills at...|\n|     3|Marginally Effective|  Mild Side Effects|         acid reflux|The acid reflux w...|Constipation, dry...|I was given Prilo...|\n|     2|Marginally Effective|Severe Side Effects|        fibromyalgia|I think that the ...|I felt extremely ...|           See above|\n+------+--------------------+-------------------+--------------------+--------------------+--------------------+--------------------+\nonly showing top 5 rows\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1592311957430_-1380394282",
+      "id": "20210701-174412_418074602",
+      "dateCreated": "2021-07-01 17:44:12.000",
+      "dateStarted": "2020-06-16 20:01:12.000",
+      "dateFinished": "2020-06-16 20:01:13.000",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "",
+      "text": "%pyspark\nfrom pyspark.ml.feature import RegexTokenizer, StopWordsRemover, CountVectorizer\nfrom pyspark.ml.classification import LogisticRegression\n# regular expression tokenizer\nregexTokenizer \u003d RegexTokenizer(inputCol\u003d\"sideEffectsReview\", outputCol\u003d\"words\", pattern\u003d\"\\\\W\")\n# stop words\nadd_stopwords \u003d [\"ourselves\", \"hers\", \"between\", \"yourself\", \"but\", \"again\", \"there\", \"about\", \"once\", \"during\", \"out\", \"very\", \"having\", \"with\", \"they\", \"own\", \"an\", \"be\", \"some\", \"for\", \"do\", \"its\", \"yours\", \"such\", \"into\", \"of\", \"most\", \"itself\", \"other\", \"off\", \"is\", \"s\", \"am\", \"or\", \"who\", \"as\", \"from\", \"him\", \"each\", \"the\", \"themselves\", \"until\", \"below\", \"are\", \"we\", \"these\", \"your\", \"his\", \"through\", \"don\", \"nor\", \"me\", \"were\", \"her\", \"more\", \"himself\", \"this\", \"down\", \"should\", \"our\", \"their\", \"while\", \"above\", \"both\", \"up\", \"to\", \"ours\", \"had\", \"she\", \"all\", \"no\", \"when\", \"at\", \"any\", \"before\", \"them\", \"same\", \"and\", \"been\", \"have\", \"in\", \"will\", \"on\", \"does\", \"yourselves\", \"then\", \"that\", \"because\", \"what\", \"over\", \"why\", \"so\", \"can\", \"did\", \"not\", \"now\", \"under\", \"he\", \"you\", \"herself\", \"has\", \"just\", \"where\", \"too\", \"only\", \"myself\", \"which\", \"those\", \"i\", \"after\", \"few\", \"whom\", \"t\", \"being\", \"if\", \"theirs\", \"my\", \"against\", \"a\", \"by\", \"doing\", \"it\", \"how\", \"further\", \"was\", \"here\", \"than\"] \nstopwordsRemover \u003d StopWordsRemover(inputCol\u003d\"words\", outputCol\u003d\"filtered\").setStopWords(add_stopwords)\n# bag of words count\ncountVectors \u003d CountVectorizer(inputCol\u003d\"filtered\", outputCol\u003d\"features\", vocabSize\u003d10000, minDF\u003d5)",
+      "user": "anonymous",
+      "dateUpdated": "2021-07-01 17:44:12.000",
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9.0,
+        "editorHide": false,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "jobName": "paragraph_1592320577713_-2146948421",
+      "id": "20210701-174412_2025263522",
+      "dateCreated": "2021-07-01 17:44:12.000",
+      "dateStarted": "2020-06-16 20:52:21.000",
+      "dateFinished": "2020-06-16 20:52:21.000",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "",
+      "text": "%pyspark\nfrom pyspark.ml import Pipeline\nfrom pyspark.ml.feature import OneHotEncoder, StringIndexer, VectorAssembler\n\nlabel_stringIdx \u003d StringIndexer(inputCol \u003d \"sideEffects\", outputCol \u003d \"label\")\npipeline \u003d Pipeline(stages\u003d[regexTokenizer, stopwordsRemover, countVectors, label_stringIdx])\n# Fit the pipeline to training documents.\npipelineFit \u003d pipeline.fit(data_DF)\ndataset \u003d pipelineFit.transform(data_DF)\n\n#-------------------------------------------------------------------------------------------\n\u0027\u0027\u0027label_stringIdx \u003d StringIndexer(inputCol \u003d \"rating\", outputCol \u003d \"label\")\npipeline \u003d Pipeline(stages\u003d[regexTokenizer, stopwordsRemover, countVectors, label_stringIdx])\n# Fit the pipeline to training documents.\npipelineFit \u003d pipeline.fit(test_spDF)\ntest \u003d pipelineFit.transform(test_spDF)\u0027\u0027\u0027\n\ndataset.show(5)",
+      "user": "anonymous",
+      "dateUpdated": "2021-07-01 17:44:12.000",
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9.0,
+        "editorHide": false,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+------+--------------------+-------------------+--------------------+--------------------+--------------------+--------------------+--------------------+--------------------+--------------------+-----+\n|rating|       effectiveness|        sideEffects|           condition|      benefitsReview|   sideEffectsReview|      commentsReview|               words|            filtered|            features|label|\n+------+--------------------+-------------------+--------------------+--------------------+--------------------+--------------------+--------------------+--------------------+--------------------+-----+\n|     4|    Highly Effective|  Mild Side Effects|management of con...|slowed the progre...|cough, hypotensio...|monitor blood pre...|[cough, hypotensi...|[cough, hypotensi...|(1889,[103,353,38...|  0.0|\n|     1|    Highly Effective|Severe Side Effects|    birth prevention|Although this typ...|Heavy Cycle, Cram...|I Hate This Birth...|[heavy, cycle, cr...|[heavy, cycle, cr...|(1889,[8,11,32,41...|  3.0|\n|    10|    Highly Effective|    No Side Effects|    menstrual cramps|I was used to hav...|Heavier bleeding ...|I took 2 pills at...|[heavier, bleedin...|[heavier, bleedin...|(1889,[139,266],[...|  1.0|\n|     3|Marginally Effective|  Mild Side Effects|         acid reflux|The acid reflux w...|Constipation, dry...|I was given Prilo...|[constipation, dr...|[constipation, dr...|(1889,[9,10,13,20...|  0.0|\n|     2|Marginally Effective|Severe Side Effects|        fibromyalgia|I think that the ...|I felt extremely ...|           See above|[i, felt, extreme...|[felt, extremely,...|(1889,[5,19,37,40...|  3.0|\n+------+--------------------+-------------------+--------------------+--------------------+--------------------+--------------------+--------------------+--------------------+--------------------+-----+\nonly showing top 5 rows\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1592320838153_357992430",
+      "id": "20210701-174412_447121474",
+      "dateCreated": "2021-07-01 17:44:12.000",
+      "dateStarted": "2020-06-16 20:52:25.000",
+      "dateFinished": "2020-06-16 20:52:27.000",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "",
+      "text": "%pyspark\n# set seed for reproducibility\n(trainingData, testData) \u003d dataset.randomSplit([0.85, 0.15], seed \u003d 100)\nprint(\"Training Dataset Count: \" + str(trainingData.count()))\nprint(\"Test Dataset Count: \" + str(testData.count()))",
+      "user": "anonymous",
+      "dateUpdated": "2021-07-01 17:44:12.000",
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9.0,
+        "editorHide": false,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "Training Dataset Count: 3511\nTest Dataset Count: 621\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1592323161623_-1626042968",
+      "id": "20210701-174412_106473759",
+      "dateCreated": "2021-07-01 17:44:12.000",
+      "dateStarted": "2020-06-16 20:52:34.000",
+      "dateFinished": "2020-06-16 20:52:36.000",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Naive Bayes",
+      "text": "%pyspark\n\n# INPUT \u003d sideEffectsReview\n# OUTPUT \u003d sideEffects\n\nfrom pyspark.ml.classification import NaiveBayes\nnb \u003d NaiveBayes(smoothing\u003d1)\nmodel \u003d nb.fit(trainingData)\npredictions \u003d model.transform(testData)\npredictions.filter(predictions[\u0027prediction\u0027] \u003d\u003d 0).select(\"sideEffectsReview\",\"sideEffects\",\"probability\",\"label\",\"prediction\").orderBy(\"probability\", ascending\u003dFalse).show(n \u003d 10, truncate \u003d 30)",
+      "user": "anonymous",
+      "dateUpdated": "2021-07-01 17:44:12.000",
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9.0,
+        "editorHide": false,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+------------------------------+-----------------------------+------------------------------+-----+----------+\n|             sideEffectsReview|                  sideEffects|                   probability|label|prediction|\n+------------------------------+-----------------------------+------------------------------+-----+----------+\n|none at 300 mg.  Possible t...|            Mild Side Effects|[0.9998630428094765,1.34774...|  0.0|       0.0|\n|The side effects for patien...|        Moderate Side Effects|[0.9998520960419472,2.01107...|  2.0|       0.0|\n|I experience regular mild f...|            Mild Side Effects|[0.9997659640122095,3.55640...|  0.0|       0.0|\n|Some drowsiness at night af...|Extremely Severe Side Effects|[0.999658237784179,8.131063...|  4.0|       0.0|\n|Side effects were minimal. ...|              No Side Effects|[0.9991888153104167,9.62627...|  1.0|       0.0|\n|The most noticeable side ef...|            Mild Side Effects|[0.9990289330721874,9.86215...|  0.0|       0.0|\n|I actually felt pretty upse...|            Mild Side Effects|[0.9986155534957459,1.07824...|  0.0|       0.0|\n|At 150mg/d side effects wer...|            Mild Side Effects|[0.996383848623397,0.002108...|  0.0|       0.0|\n|Severe grogginess, often ac...|        Moderate Side Effects|[0.9949595276584872,1.96046...|  2.0|       0.0|\n|The major side effect of dr...|        Moderate Side Effects|[0.9941689090005087,0.00308...|  2.0|       0.0|\n+------------------------------+-----------------------------+------------------------------+-----+----------+\nonly showing top 10 rows\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1592321020731_-148250364",
+      "id": "20210701-174412_2143873559",
+      "dateCreated": "2021-07-01 17:44:12.000",
+      "dateStarted": "2020-06-16 20:56:34.000",
+      "dateFinished": "2020-06-16 20:56:37.000",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "",
+      "text": "%pyspark\nfrom pyspark.ml.evaluation import MulticlassClassificationEvaluator\nevaluator \u003d MulticlassClassificationEvaluator(predictionCol\u003d\"prediction\")\nprint(f\u0027Accuracy: {evaluator.evaluate(predictions)}\u0027)",
+      "user": "anonymous",
+      "dateUpdated": "2021-07-01 17:44:12.000",
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9.0,
+        "editorHide": false,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "Accuracy: 0.5756026871922219\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1592323357947_-336166626",
+      "id": "20210701-174412_1615795611",
+      "dateCreated": "2021-07-01 17:44:12.000",
+      "dateStarted": "2020-06-16 20:57:09.000",
+      "dateFinished": "2020-06-16 20:57:11.000",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "KA5 (ML): Kısım 3 (Dünya kupası verini kumeleme) Herhangi bir kümeleme yontemi ile kumelenmeli ve modelin performansı sunulmalıdır",
+      "text": "%md\nhttps://www.kaggle.com/oliversinn/fifa-18-visualisation-clustering-ml/data\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-07-01 17:44:12.000",
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/markdown",
+        "fontSize": 9.0,
+        "editorHide": true,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003cdiv class\u003d\"markdown-body\"\u003e\n\u003cp\u003e\u003ca href\u003d\"https://www.kaggle.com/oliversinn/fifa-18-visualisation-clustering-ml/data\"\u003ehttps://www.kaggle.com/oliversinn/fifa-18-visualisation-clustering-ml/data\u003c/a\u003e\u003c/p\u003e\n\u003c/div\u003e"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1592420588568_-629458220",
+      "id": "20210701-174412_2032085962",
+      "dateCreated": "2021-07-01 17:44:12.000",
+      "dateStarted": "2020-06-17 22:04:17.000",
+      "dateFinished": "2020-06-17 22:04:17.000",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "",
+      "text": "%pyspark\nimport pandas as pd\nimport numpy as np\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-07-01 17:44:12.000",
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9.0,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "jobName": "paragraph_1592420657789_366051824",
+      "id": "20210701-174412_1357287534",
+      "dateCreated": "2021-07-01 17:44:12.000",
+      "dateStarted": "2020-06-18 21:20:06.000",
+      "dateFinished": "2020-06-18 21:20:25.000",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Load FIFA 18 dataset",
+      "text": "%pyspark\n# Read CSV in Pyspark with correct Datatypes\nfifa18_df \u003d (spark.read.format(\"csv\").option(\"mode\", \"DROPMALFORMED\").option(\"header\", \"true\").option(\"inferschema\", \"true\").option(\"delimiter\", \",\").load(\"C:/Users/Administrator/Downloads/complete.csv\"))\n\nfifa18_df.printSchema()\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-07-01 17:44:12.000",
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9.0,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "root\n |-- ID: integer (nullable \u003d true)\n |-- name: string (nullable \u003d true)\n |-- full_name: string (nullable \u003d true)\n |-- club: string (nullable \u003d true)\n |-- club_logo: string (nullable \u003d true)\n |-- special: integer (nullable \u003d true)\n |-- age: integer (nullable \u003d true)\n |-- league: string (nullable \u003d true)\n |-- birth_date: timestamp (nullable \u003d true)\n |-- height_cm: double (nullable \u003d true)\n |-- weight_kg: double (nullable \u003d true)\n |-- body_type: string (nullable \u003d true)\n |-- real_face: boolean (nullable \u003d true)\n |-- flag: string (nullable \u003d true)\n |-- nationality: string (nullable \u003d true)\n |-- photo: string (nullable \u003d true)\n |-- eur_value: double (nullable \u003d true)\n |-- eur_wage: double (nullable \u003d true)\n |-- eur_release_clause: double (nullable \u003d true)\n |-- overall: integer (nullable \u003d true)\n |-- potential: integer (nullable \u003d true)\n |-- pac: integer (nullable \u003d true)\n |-- sho: integer (nullable \u003d true)\n |-- pas: integer (nullable \u003d true)\n |-- dri: integer (nullable \u003d true)\n |-- def: integer (nullable \u003d true)\n |-- phy: integer (nullable \u003d true)\n |-- international_reputation: integer (nullable \u003d true)\n |-- skill_moves: integer (nullable \u003d true)\n |-- weak_foot: integer (nullable \u003d true)\n |-- work_rate_att: string (nullable \u003d true)\n |-- work_rate_def: string (nullable \u003d true)\n |-- preferred_foot: string (nullable \u003d true)\n |-- crossing: integer (nullable \u003d true)\n |-- finishing: integer (nullable \u003d true)\n |-- heading_accuracy: integer (nullable \u003d true)\n |-- short_passing: integer (nullable \u003d true)\n |-- volleys: integer (nullable \u003d true)\n |-- dribbling: integer (nullable \u003d true)\n |-- curve: integer (nullable \u003d true)\n |-- free_kick_accuracy: integer (nullable \u003d true)\n |-- long_passing: integer (nullable \u003d true)\n |-- ball_control: integer (nullable \u003d true)\n |-- acceleration: integer (nullable \u003d true)\n |-- sprint_speed: integer (nullable \u003d true)\n |-- agility: integer (nullable \u003d true)\n |-- reactions: integer (nullable \u003d true)\n |-- balance: integer (nullable \u003d true)\n |-- shot_power: integer (nullable \u003d true)\n |-- jumping: integer (nullable \u003d true)\n |-- stamina: integer (nullable \u003d true)\n |-- strength: integer (nullable \u003d true)\n |-- long_shots: integer (nullable \u003d true)\n |-- aggression: integer (nullable \u003d true)\n |-- interceptions: integer (nullable \u003d true)\n |-- positioning: integer (nullable \u003d true)\n |-- vision: integer (nullable \u003d true)\n |-- penalties: integer (nullable \u003d true)\n |-- composure: integer (nullable \u003d true)\n |-- marking: integer (nullable \u003d true)\n |-- standing_tackle: integer (nullable \u003d true)\n |-- sliding_tackle: integer (nullable \u003d true)\n |-- gk_diving: integer (nullable \u003d true)\n |-- gk_handling: integer (nullable \u003d true)\n |-- gk_kicking: integer (nullable \u003d true)\n |-- gk_positioning: integer (nullable \u003d true)\n |-- gk_reflexes: integer (nullable \u003d true)\n |-- rs: double (nullable \u003d true)\n |-- rw: double (nullable \u003d true)\n |-- rf: double (nullable \u003d true)\n |-- ram: double (nullable \u003d true)\n |-- rcm: double (nullable \u003d true)\n |-- rm: double (nullable \u003d true)\n |-- rdm: double (nullable \u003d true)\n |-- rcb: double (nullable \u003d true)\n |-- rb: double (nullable \u003d true)\n |-- rwb: double (nullable \u003d true)\n |-- st: double (nullable \u003d true)\n |-- lw: double (nullable \u003d true)\n |-- cf: double (nullable \u003d true)\n |-- cam: double (nullable \u003d true)\n |-- cm: double (nullable \u003d true)\n |-- lm: double (nullable \u003d true)\n |-- cdm: double (nullable \u003d true)\n |-- cb: double (nullable \u003d true)\n |-- lb: double (nullable \u003d true)\n |-- lwb: double (nullable \u003d true)\n |-- ls: double (nullable \u003d true)\n |-- lf: double (nullable \u003d true)\n |-- lam: double (nullable \u003d true)\n |-- lcm: double (nullable \u003d true)\n |-- ldm: double (nullable \u003d true)\n |-- lcb: double (nullable \u003d true)\n |-- gk: double (nullable \u003d true)\n |-- 1_on_1_rush_trait: boolean (nullable \u003d true)\n |-- acrobatic_clearance_trait: boolean (nullable \u003d true)\n |-- argues_with_officials_trait: boolean (nullable \u003d true)\n |-- avoids_using_weaker_foot_trait: boolean (nullable \u003d true)\n |-- backs_into_player_trait: boolean (nullable \u003d true)\n |-- bicycle_kicks_trait: boolean (nullable \u003d true)\n |-- cautious_with_crosses_trait: boolean (nullable \u003d true)\n |-- chip_shot_trait: boolean (nullable \u003d true)\n |-- chipped_penalty_trait: boolean (nullable \u003d true)\n |-- comes_for_crosses_trait: boolean (nullable \u003d true)\n |-- corner_specialist_trait: boolean (nullable \u003d true)\n |-- diver_trait: boolean (nullable \u003d true)\n |-- dives_into_tackles_trait: boolean (nullable \u003d true)\n |-- diving_header_trait: boolean (nullable \u003d true)\n |-- driven_pass_trait: boolean (nullable \u003d true)\n |-- early_crosser_trait: boolean (nullable \u003d true)\n |-- fan\u0027s_favourite_trait: boolean (nullable \u003d true)\n |-- fancy_flicks_trait: boolean (nullable \u003d true)\n |-- finesse_shot_trait: boolean (nullable \u003d true)\n |-- flair_trait: boolean (nullable \u003d true)\n |-- flair_passes_trait: boolean (nullable \u003d true)\n |-- gk_flat_kick_trait: boolean (nullable \u003d true)\n |-- gk_long_throw_trait: boolean (nullable \u003d true)\n |-- gk_up_for_corners_trait: boolean (nullable \u003d true)\n |-- giant_throw_in_trait: boolean (nullable \u003d true)\n |-- inflexible_trait: boolean (nullable \u003d true)\n |-- injury_free_trait: boolean (nullable \u003d true)\n |-- injury_prone_trait: boolean (nullable \u003d true)\n |-- leadership_trait: boolean (nullable \u003d true)\n |-- long_passer_trait: boolean (nullable \u003d true)\n |-- long_shot_taker_trait: boolean (nullable \u003d true)\n |-- long_throw_in_trait: boolean (nullable \u003d true)\n |-- one_club_player_trait: boolean (nullable \u003d true)\n |-- outside_foot_shot_trait: boolean (nullable \u003d true)\n |-- playmaker_trait: boolean (nullable \u003d true)\n |-- power_free_kick_trait: boolean (nullable \u003d true)\n |-- power_header_trait: boolean (nullable \u003d true)\n |-- puncher_trait: boolean (nullable \u003d true)\n |-- rushes_out_of_goal_trait: boolean (nullable \u003d true)\n |-- saves_with_feet_trait: boolean (nullable \u003d true)\n |-- second_wind_trait: boolean (nullable \u003d true)\n |-- selfish_trait: boolean (nullable \u003d true)\n |-- skilled_dribbling_trait: boolean (nullable \u003d true)\n |-- stutter_penalty_trait: boolean (nullable \u003d true)\n |-- swerve_pass_trait: boolean (nullable \u003d true)\n |-- takes_finesse_free_kicks_trait: boolean (nullable \u003d true)\n |-- target_forward_trait: boolean (nullable \u003d true)\n |-- team_player_trait: boolean (nullable \u003d true)\n |-- technical_dribbler_trait: boolean (nullable \u003d true)\n |-- tries_to_beat_defensive_line_trait: boolean (nullable \u003d true)\n |-- poacher_speciality: boolean (nullable \u003d true)\n |-- speedster_speciality: boolean (nullable \u003d true)\n |-- aerial_threat_speciality: boolean (nullable \u003d true)\n |-- dribbler_speciality: boolean (nullable \u003d true)\n |-- playmaker_speciality: boolean (nullable \u003d true)\n |-- engine_speciality: boolean (nullable \u003d true)\n |-- distance_shooter_speciality: boolean (nullable \u003d true)\n |-- crosser_speciality: boolean (nullable \u003d true)\n |-- free_kick_specialist_speciality: boolean (nullable \u003d true)\n |-- tackling_speciality: boolean (nullable \u003d true)\n |-- tactician_speciality: boolean (nullable \u003d true)\n |-- acrobat_speciality: boolean (nullable \u003d true)\n |-- strength_speciality: boolean (nullable \u003d true)\n |-- clinical_finisher_speciality: boolean (nullable \u003d true)\n |-- prefers_rs: boolean (nullable \u003d true)\n |-- prefers_rw: boolean (nullable \u003d true)\n |-- prefers_rf: boolean (nullable \u003d true)\n |-- prefers_ram: boolean (nullable \u003d true)\n |-- prefers_rcm: boolean (nullable \u003d true)\n |-- prefers_rm: boolean (nullable \u003d true)\n |-- prefers_rdm: boolean (nullable \u003d true)\n |-- prefers_rcb: boolean (nullable \u003d true)\n |-- prefers_rb: boolean (nullable \u003d true)\n |-- prefers_rwb: boolean (nullable \u003d true)\n |-- prefers_st: boolean (nullable \u003d true)\n |-- prefers_lw: boolean (nullable \u003d true)\n |-- prefers_cf: boolean (nullable \u003d true)\n |-- prefers_cam: boolean (nullable \u003d true)\n |-- prefers_cm: boolean (nullable \u003d true)\n |-- prefers_lm: boolean (nullable \u003d true)\n |-- prefers_cdm: boolean (nullable \u003d true)\n |-- prefers_cb: boolean (nullable \u003d true)\n |-- prefers_lb: boolean (nullable \u003d true)\n |-- prefers_lwb: boolean (nullable \u003d true)\n |-- prefers_ls: boolean (nullable \u003d true)\n |-- prefers_lf: boolean (nullable \u003d true)\n |-- prefers_lam: boolean (nullable \u003d true)\n |-- prefers_lcm: boolean (nullable \u003d true)\n |-- prefers_ldm: boolean (nullable \u003d true)\n |-- prefers_lcb: boolean (nullable \u003d true)\n |-- prefers_gk: boolean (nullable \u003d true)\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1592420730367_-2062155414",
+      "id": "20210701-174412_419594260",
+      "dateCreated": "2021-07-01 17:44:12.000",
+      "dateStarted": "2020-06-18 21:22:15.000",
+      "dateFinished": "2020-06-18 21:22:20.000",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "",
+      "text": "%pyspark\n#fifa18_df.schema[\u0027age\u0027].dataType",
+      "user": "anonymous",
+      "dateUpdated": "2021-07-01 17:44:12.000",
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9.0,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "jobName": "paragraph_1592434843734_-1831828900",
+      "id": "20210701-174412_1805966855",
+      "dateCreated": "2021-07-01 17:44:12.000",
+      "dateStarted": "2020-06-18 20:36:56.000",
+      "dateFinished": "2020-06-18 20:36:57.000",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "",
+      "text": "%pyspark\n\n# To see how our dataframe looks we can select a few columns\n\nfifa18_df.select(\u0027name\u0027, \u0027club\u0027,\u0027age\u0027, \u0027league\u0027, \u0027height_cm\u0027, \u0027weight_kg\u0027, \u0027body_type\u0027, \u0027nationality\u0027, \u0027overall\u0027).show(5)",
+      "user": "anonymous",
+      "dateUpdated": "2021-07-01 17:44:12.000",
+      "config": {
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/scala",
+        "fontSize": 9.0,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+-----------------+-------------------+---+--------------------+---------+---------+----------+-----------+-------+\n|             name|               club|age|              league|height_cm|weight_kg| body_type|nationality|overall|\n+-----------------+-------------------+---+--------------------+---------+---------+----------+-----------+-------+\n|Cristiano Ronaldo|     Real Madrid CF| 32|Spanish Primera D...|    185.0|     80.0|C. Ronaldo|   Portugal|     94|\n|         L. Messi|       FC Barcelona| 30|Spanish Primera D...|    170.0|     72.0|     Messi|  Argentina|     93|\n|           Neymar|Paris Saint-Germain| 25|      French Ligue 1|    175.0|     68.0|    Neymar|     Brazil|     92|\n|        L. Suárez|       FC Barcelona| 30|Spanish Primera D...|    182.0|     86.0|    Normal|    Uruguay|     92|\n|         M. Neuer|   FC Bayern Munich| 31|   German Bundesliga|    193.0|     92.0|    Normal|    Germany|     92|\n+-----------------+-------------------+---+--------------------+---------+---------+----------+-----------+-------+\nonly showing top 5 rows\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1592420844427_626505976",
+      "id": "20210701-174412_803354527",
+      "dateCreated": "2021-07-01 17:44:12.000",
+      "dateStarted": "2020-06-18 20:37:01.000",
+      "dateFinished": "2020-06-18 20:37:01.000",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "dataframe shape",
+      "text": "%pyspark\nprint((fifa18_df.count(), len(fifa18_df.columns)))",
+      "user": "anonymous",
+      "dateUpdated": "2021-07-01 17:44:12.000",
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9.0,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "(17994, 185)\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1592420970620_1110253691",
+      "id": "20210701-174412_1878797948",
+      "dateCreated": "2021-07-01 17:44:12.000",
+      "dateStarted": "2020-06-18 21:22:28.000",
+      "dateFinished": "2020-06-18 21:22:29.000",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Now we drop the string columns",
+      "text": "%pyspark\nstring_columns \u003d [\n                  \u0027name\u0027,\n                  \u0027full_name\u0027,\n                  \u0027club\u0027,\n                  \u0027club_logo\u0027,\n                  \u0027league\u0027,\n                  \u0027birth_date\u0027,\n                  \u0027body_type\u0027,\n                  \u0027flag\u0027,\n                  \u0027nationality\u0027,\n                  \u0027photo\u0027,\n                  \u0027work_rate_att\u0027,\n                  \u0027work_rate_def\u0027,\n                  \u0027preferred_foot\u0027\n                 ]\n\nfifa18_df \u003d fifa18_df.drop(*string_columns)\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-07-01 17:44:12.000",
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9.0,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "jobName": "paragraph_1592430824815_-924192740",
+      "id": "20210701-174412_2108710534",
+      "dateCreated": "2021-07-01 17:44:12.000",
+      "dateStarted": "2020-06-18 22:23:17.000",
+      "dateFinished": "2020-06-18 22:23:17.000",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "",
+      "text": "%pyspark\nfeature_cols \u003d [\n \u0027pac\u0027,\n \u0027sho\u0027,\n \u0027pas\u0027,\n \u0027dri\u0027,\n \u0027def\u0027,\n \u0027phy\u0027,\n \u0027international_reputation\u0027,\n \u0027skill_moves\u0027,\n \u0027weak_foot\u0027,\n \u0027crossing\u0027,\n \u0027finishing\u0027,\n \u0027heading_accuracy\u0027,\n \u0027short_passing\u0027,\n \u0027volleys\u0027,\n \u0027dribbling\u0027,\n \u0027curve\u0027,\n \u0027free_kick_accuracy\u0027,\n \u0027long_passing\u0027,\n \u0027ball_control\u0027,\n \u0027acceleration\u0027,\n \u0027sprint_speed\u0027,\n \u0027agility\u0027,\n \u0027reactions\u0027,\n \u0027balance\u0027,\n \u0027shot_power\u0027,\n \u0027jumping\u0027,\n \u0027stamina\u0027,\n \u0027strength\u0027,\n \u0027long_shots\u0027,\n \u0027aggression\u0027,\n \u0027interceptions\u0027,\n \u0027positioning\u0027,\n \u0027vision\u0027,\n \u0027penalties\u0027,\n \u0027composure\u0027,\n \u0027marking\u0027,\n \u0027standing_tackle\u0027,\n \u0027sliding_tackle\u0027,\n \u0027gk_diving\u0027,\n \u0027gk_handling\u0027,\n \u0027gk_kicking\u0027,\n \u0027gk_positioning\u0027,\n \u0027gk_reflexes\u0027,\n \u00271_on_1_rush_trait\u0027,\n \u0027acrobatic_clearance_trait\u0027,\n \u0027argues_with_officials_trait\u0027,\n \u0027avoids_using_weaker_foot_trait\u0027,\n \u0027backs_into_player_trait\u0027,\n \u0027bicycle_kicks_trait\u0027,\n \u0027cautious_with_crosses_trait\u0027,\n \u0027chip_shot_trait\u0027,\n \u0027chipped_penalty_trait\u0027,\n \u0027comes_for_crosses_trait\u0027,\n \u0027corner_specialist_trait\u0027,\n \u0027diver_trait\u0027,\n \u0027dives_into_tackles_trait\u0027,\n \u0027diving_header_trait\u0027,\n \u0027driven_pass_trait\u0027,\n \u0027early_crosser_trait\u0027,\n \"fan\u0027s_favourite_trait\",\n \u0027fancy_flicks_trait\u0027,\n \u0027finesse_shot_trait\u0027,\n \u0027flair_trait\u0027,\n \u0027flair_passes_trait\u0027,\n \u0027gk_flat_kick_trait\u0027,\n \u0027gk_long_throw_trait\u0027,\n \u0027gk_up_for_corners_trait\u0027,\n \u0027giant_throw_in_trait\u0027,\n \u0027inflexible_trait\u0027,\n \u0027injury_free_trait\u0027,\n \u0027injury_prone_trait\u0027,\n \u0027leadership_trait\u0027,\n \u0027long_passer_trait\u0027,\n \u0027long_shot_taker_trait\u0027,\n \u0027long_throw_in_trait\u0027,\n \u0027one_club_player_trait\u0027,\n \u0027outside_foot_shot_trait\u0027,\n \u0027playmaker_trait\u0027,\n \u0027power_free_kick_trait\u0027,\n \u0027power_header_trait\u0027,\n \u0027puncher_trait\u0027,\n \u0027rushes_out_of_goal_trait\u0027,\n \u0027saves_with_feet_trait\u0027,\n \u0027second_wind_trait\u0027,\n \u0027selfish_trait\u0027,\n \u0027skilled_dribbling_trait\u0027,\n \u0027stutter_penalty_trait\u0027,\n \u0027swerve_pass_trait\u0027,\n \u0027takes_finesse_free_kicks_trait\u0027,\n \u0027target_forward_trait\u0027,\n \u0027team_player_trait\u0027,\n \u0027technical_dribbler_trait\u0027,\n \u0027tries_to_beat_defensive_line_trait\u0027,\n \u0027poacher_speciality\u0027,\n \u0027speedster_speciality\u0027,\n \u0027aerial_threat_speciality\u0027,\n \u0027dribbler_speciality\u0027,\n \u0027playmaker_speciality\u0027,\n \u0027engine_speciality\u0027,\n \u0027distance_shooter_speciality\u0027,\n \u0027crosser_speciality\u0027,\n \u0027free_kick_specialist_speciality\u0027,\n \u0027tackling_speciality\u0027,\n \u0027tactician_speciality\u0027,\n \u0027acrobat_speciality\u0027,\n \u0027strength_speciality\u0027,\n \u0027clinical_finisher_speciality\u0027,\n \u0027prefers_rs\u0027,\n \u0027prefers_rw\u0027,\n \u0027prefers_rf\u0027,\n \u0027prefers_ram\u0027,\n \u0027prefers_rcm\u0027,\n \u0027prefers_rm\u0027,\n \u0027prefers_rdm\u0027,\n \u0027prefers_rcb\u0027,\n \u0027prefers_rb\u0027,\n \u0027prefers_rwb\u0027,\n \u0027prefers_st\u0027,\n \u0027prefers_lw\u0027,\n \u0027prefers_cf\u0027,\n \u0027prefers_cam\u0027,\n \u0027prefers_cm\u0027,\n \u0027prefers_lm\u0027,\n \u0027prefers_cdm\u0027,\n \u0027prefers_cb\u0027,\n \u0027prefers_lb\u0027,\n \u0027prefers_lwb\u0027,\n \u0027prefers_ls\u0027,\n \u0027prefers_lf\u0027,\n \u0027prefers_lam\u0027,\n \u0027prefers_lcm\u0027,\n \u0027prefers_ldm\u0027,\n \u0027prefers_lcb\u0027,\n \u0027prefers_gk\u0027]\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-07-01 17:44:12.000",
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9.0,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "jobName": "paragraph_1592504847037_-1880270081",
+      "id": "20210701-174412_2086538838",
+      "dateCreated": "2021-07-01 17:44:12.000",
+      "dateStarted": "2020-06-18 22:23:52.000",
+      "dateFinished": "2020-06-18 22:23:52.000",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "",
+      "text": "%pyspark\n# 13 string columns removed\nprint((fifa18_df.count(), len(fifa18_df.columns)))",
+      "user": "anonymous",
+      "dateUpdated": "2021-07-01 17:44:12.000",
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9.0,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "(17994, 172)\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1592499911601_616986666",
+      "id": "20210701-174412_510830969",
+      "dateCreated": "2021-07-01 17:44:12.000",
+      "dateStarted": "2020-06-18 22:24:02.000",
+      "dateFinished": "2020-06-18 22:24:03.000",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "",
+      "text": "%pyspark\nfrom pyspark.ml.feature import VectorAssembler\n\nvecAssembler \u003d VectorAssembler(inputCols\u003dfeature_cols, outputCol\u003d\"features\")\nclustered_df \u003d vecAssembler.transform(fifa18_df)",
+      "user": "anonymous",
+      "dateUpdated": "2021-07-01 17:44:12.000",
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9.0,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "jobName": "paragraph_1592422196698_-1923057748",
+      "id": "20210701-174412_718807607",
+      "dateCreated": "2021-07-01 17:44:12.000",
+      "dateStarted": "2020-06-18 22:24:09.000",
+      "dateFinished": "2020-06-18 22:24:10.000",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "K-Means clustering",
+      "text": "%pyspark\nfrom pyspark.ml.clustering import KMeans\n\nkmeans \u003d KMeans(k\u003d8, seed\u003d1)  # 8 clusters\nmodel \u003d kmeans.fit(clustered_df.select(\u0027features\u0027))",
+      "user": "anonymous",
+      "dateUpdated": "2021-07-01 17:44:12.000",
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9.0,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "jobName": "paragraph_1592422313983_-1385791612",
+      "id": "20210701-174412_1231465102",
+      "dateCreated": "2021-07-01 17:44:12.000",
+      "dateStarted": "2020-06-18 22:25:01.000",
+      "dateFinished": "2020-06-18 22:25:03.000",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "",
+      "text": "%pyspark\ntransformed \u003d model.transform(clustered_df)\ntransformed.select(\u0027ID\u0027,\u0027prediction\u0027).show(15)",
+      "user": "anonymous",
+      "dateUpdated": "2021-07-01 17:44:12.000",
+      "config": {
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/scala",
+        "fontSize": 9.0,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+------+----------+\n|    ID|prediction|\n+------+----------+\n| 20801|         3|\n|158023|         3|\n|190871|         3|\n|176580|         3|\n|167495|         4|\n|188545|         3|\n|193080|         4|\n|183277|         3|\n|182521|         0|\n|167664|         3|\n|155862|         0|\n|192985|         3|\n|192119|         4|\n|184941|         3|\n|177003|         0|\n+------+----------+\nonly showing top 15 rows\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1592423334770_1242979950",
+      "id": "20210701-174412_899528890",
+      "dateCreated": "2021-07-01 17:44:12.000",
+      "dateStarted": "2020-06-18 22:19:11.000",
+      "dateFinished": "2020-06-18 22:19:11.000",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "",
+      "text": "%pyspark\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-07-01 17:44:12.000",
+      "config": {
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12.0,
+        "editorMode": "ace/mode/scala",
+        "fontSize": 9.0,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "jobName": "paragraph_1592505882889_-1891626968",
+      "id": "20210701-174412_1818592865",
+      "dateCreated": "2021-07-01 17:44:12.000",
+      "dateStarted": "2021-03-08 14:02:49.000",
+      "dateFinished": "2021-03-08 14:02:49.000",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    }
+  ],
+  "name": "bigDataSpark_clone",
+  "id": "2FAGW7FW6",
+  "noteParams": {},
+  "noteForms": {},
+  "angularObjects": {
+    "md:shared_process": [],
+    "spark:shared_process": []
+  },
+  "config": {
+    "personalizedMode": "false",
+    "looknfeel": "default",
+    "isZeppelinNotebookCronEnable": false
+  },
+  "info": {}
+}
